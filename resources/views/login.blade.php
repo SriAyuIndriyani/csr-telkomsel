@@ -58,23 +58,13 @@
                                     <form class="row g-3 needs-validation text-light" novalidate action="/"
                                         method="POST">
                                         @csrf
-                                        @if (session('success'))
-                                            <div id="success-alert" class="alert alert-success" role="alert">
-                                                {{ session('success') }}
-                                            </div>
-                                        @endif
-                                        @if (session('error'))
-                                            <div id="error-alert" class="alert alert-danger" role="alert">
-                                                {{ session('error') }}
-                                            </div>
-                                        @endif
                                         <div class="col-12">
-                                            <label for="yourEmail" class="form-label">E-Mail</label>
+                                            <label for="yourEmail" class="form-label">Username</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text" id="inputGroupPrepend">
                                                     <i class="ri-mail-fill"></i>
                                                 </span>
-                                                <input type="email" name="email" class="form-control" id="yourEmail"
+                                                <input type="text" name="username" class="form-control" id="yourEmail"
                                                     required>
                                                 <div class="invalid-feedback text-dark">Silahkan masukkan email.</div>
                                             </div>
