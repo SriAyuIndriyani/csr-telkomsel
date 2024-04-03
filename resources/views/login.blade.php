@@ -33,7 +33,7 @@
 </head>
 
 <body style="font-family: nunito">
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
 
     <main>
         <div class="container">
@@ -43,8 +43,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
                             <div class="d-flex flex-column align-items-center mb-2">
-                                <img src="/images/telkomsel.png" alt=""
-                                    class="w-50 justify-content-center">
+                                <img src="/images/telkomsel.png" alt="" class="w-50 justify-content-center">
                             </div>
                             <!-- End Logo -->
                             <div class="card mb-3 bg-danger">
@@ -64,8 +63,8 @@
                                                 <span class="input-group-text" id="inputGroupPrepend">
                                                     <i class="ri-mail-fill"></i>
                                                 </span>
-                                                <input type="text" name="username" class="form-control" id="yourEmail"
-                                                    required>
+                                                <input type="text" name="username" class="form-control"
+                                                    id="yourEmail" required>
                                                 <div class="invalid-feedback text-dark">Silahkan masukkan email.</div>
                                             </div>
                                         </div>

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\UsersModels;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginControllers extends Controller
 {
@@ -16,6 +16,13 @@ class LoginControllers extends Controller
             'username' => $request->input('username'),
             'password' => $request->input('password'),
         ];
+        // Pengecekan apakah username ada di database
+        $userExists = UsersModels::where('username', $infoLogin['username'])->exists();
+        if (!$userExists) {
+            // username tidak terdaftar
+            Alert::error('Gagal', 'Akun Anda Belum Terdaftar, Silahkan Hubungi Admin Untuk Melakukan Pendaftaran Akun!.');
+            return redirect('/')->withErrors('Akun belum terdaftar. Silakan daftar terlebih dahulu.')->withInput();
+        }
         if (Auth::guard('web')->attempt($infoLogin)) {
             $user = Auth::guard('web')->user();
             $userWithRole = UsersModels::join('roles', 'users.id_role', '=', 'roles.id_role')
@@ -23,6 +30,7 @@ class LoginControllers extends Controller
                 ->where('users.id', $user->id)
                 ->first();
             $role = strtolower($userWithRole->role);
+            // Admin
             if (strcasecmp($role, 'Admin') === 0 || strcasecmp($role, 'admin') === 0) {
                 session([
                     'user' => [
@@ -31,8 +39,10 @@ class LoginControllers extends Controller
                         'username' => $userWithRole->username,
                     ]
                 ]);
-                return redirect('/admin/dashboard');
-            } elseif (strcasecmp($role, 'User') === 0 || strcasecmp($role, 'user') === 0) {
+                return redirect('/admin/dashboard')->with('showSuccessModal', true);
+            }
+            // Pengguna
+            elseif (strcasecmp($role, 'User') === 0 || strcasecmp($role, 'user') === 0) {
                 session([
                     'user' => [
                         'id' => $userWithRole->id,
@@ -41,13 +51,16 @@ class LoginControllers extends Controller
                     ]
                 ]);
                 return redirect('/user/dashboard')->with('showSuccessModal', true);
-            } else {
+            }
+            // Selain Di Atas
+            else {
                 Auth::guard('web')->logout();
                 Session::forget('user');
-                return redirect('/')->withErrors('Anda tidak diizinkan masuk')->withInput();
+                return redirect('/');
             }
         }
-        return redirect('/')->with('error', 'E-Mail atau Password yang anda masukkan salah!.');
+        Alert::error('Gagal', 'Password Yang Anda Masukkan Salah, Coba Lagi!.');
+        return redirect('/');
     }
 
     public function logout(Request $request)
