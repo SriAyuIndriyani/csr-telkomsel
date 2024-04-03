@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Login - Smart Agenda</title>
+    <link rel="icon" href="{{asset('/images/ikon.png')}}" type="image/x-icon">
+    <title>Login - csr grapari</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -62,18 +63,18 @@
                                             <label for="yourEmail" class="form-label">Username</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text" id="inputGroupPrepend">
-                                                    <i class="ri-mail-fill"></i>
+                                                    <i class="bi bi-person"></i>
                                                 </span>
                                                 <input type="text" name="username" class="form-control" id="yourEmail"
                                                     required>
-                                                <div class="invalid-feedback text-dark">Silahkan masukkan email.</div>
+                                                <div class="invalid-feedback text-dark">Silahkan masukkan username</div>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Kata Sandi</label>
+                                            <label for="yourPassword" class="form-label">Password</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text" id="inputGroupPrepend">
-                                                    <i class="ri-lock-2-fill    "></i>
+                                                    <i class="bi bi-unlock"></i>
                                                 </span>
                                                 <input type="password" name="password" class="form-control"
                                                     id="yourPassword" required>
@@ -88,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="credits">
-                                Designed by <a href="">Telekomunikasi Seluler Indonesia</a>
+                                Designed by <a href="">Saiy</a>
                             </div>
 
                         </div>
