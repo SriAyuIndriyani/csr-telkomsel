@@ -25,7 +25,7 @@ class LoginControllers extends Controller
         }
         if (Auth::guard('web')->attempt($infoLogin)) {
             $user = Auth::guard('web')->user();
-            $userWithRole = UsersModels::join('roles', 'users.id_role', '=', 'roles.id_role')
+            $userWithRole = UsersModels::join('roles', 'users.id_role', '=', 'roles.id')
                 ->select('users.*', 'roles.role')
                 ->where('users.id', $user->id)
                 ->first();
@@ -42,7 +42,7 @@ class LoginControllers extends Controller
                 return redirect('/admin/dashboard')->with('showSuccessModal', true);
             }
             // Pengguna
-            elseif (strcasecmp($role, 'User') === 0 || strcasecmp($role, 'user') === 0) {
+            elseif (strcasecmp($role, 'Viewer') === 0 || strcasecmp($role, 'viewer') === 0) {
                 session([
                     'user' => [
                         'id' => $userWithRole->id,

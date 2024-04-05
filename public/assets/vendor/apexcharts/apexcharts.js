@@ -1,5 +1,5 @@
 /*!
- * ApexCharts v3.47.0
+ * ApexCharts v3.45.2
  * (c) 2018-2024 ApexCharts
  * Released under the MIT License.
  */
@@ -254,63 +254,6 @@
 
   function _nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  function _createForOfIteratorHelper(o, allowArrayLike) {
-    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-
-    if (!it) {
-      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-        if (it) o = it;
-        var i = 0;
-
-        var F = function () {};
-
-        return {
-          s: F,
-          n: function () {
-            if (i >= o.length) return {
-              done: true
-            };
-            return {
-              done: false,
-              value: o[i++]
-            };
-          },
-          e: function (e) {
-            throw e;
-          },
-          f: F
-        };
-      }
-
-      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-
-    var normalCompletion = true,
-        didErr = false,
-        err;
-    return {
-      s: function () {
-        it = it.call(o);
-      },
-      n: function () {
-        var step = it.next();
-        normalCompletion = step.done;
-        return step;
-      },
-      e: function (e) {
-        didErr = true;
-        err = e;
-      },
-      f: function () {
-        try {
-          if (!normalCompletion && it.return != null) it.return();
-        } finally {
-          if (didErr) throw err;
-        }
-      }
-    };
   }
 
   /*
@@ -746,51 +689,6 @@
 
 
         return false;
-      } // 
-      // Find the Greatest Common Divisor of two numbers
-      //
-
-    }, {
-      key: "getGCD",
-      value: function getGCD(a, b) {
-        var p = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
-        var big = Math.pow(10, p - Math.floor(Math.log10(Math.max(a, b))));
-        a = Math.round(Math.abs(a) * big);
-        b = Math.round(Math.abs(b) * big);
-
-        while (b) {
-          var t = b;
-          b = a % b;
-          a = t;
-        }
-
-        return a / big;
-      }
-    }, {
-      key: "getPrimeFactors",
-      value: function getPrimeFactors(n) {
-        var factors = [];
-        var divisor = 2;
-
-        while (n >= 2) {
-          if (n % divisor == 0) {
-            factors.push(divisor);
-            n = n / divisor;
-          } else {
-            divisor++;
-          }
-        }
-
-        return factors;
-      }
-    }, {
-      key: "mod",
-      value: function mod(a, b) {
-        var p = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
-        var big = Math.pow(10, p - Math.floor(Math.log10(Math.max(a, b))));
-        a = Math.round(Math.abs(a) * big);
-        b = Math.round(Math.abs(b) * big);
-        return a % b / big;
       }
     }]);
 
@@ -1190,21 +1088,11 @@
     }, {
       key: "addShadow",
       value: function addShadow(add, i, attrs) {
-        var _w$config$chart$dropS;
-
-        var w = this.w;
         var blur = attrs.blur,
             top = attrs.top,
             left = attrs.left,
             color = attrs.color,
             opacity = attrs.opacity;
-
-        if (((_w$config$chart$dropS = w.config.chart.dropShadow.enabledOnSeries) === null || _w$config$chart$dropS === void 0 ? void 0 : _w$config$chart$dropS.length) > 0) {
-          if (w.config.chart.dropShadow.enabledOnSeries.indexOf(i) === -1) {
-            return add;
-          }
-        }
-
         var shadowBlur = add.flood(Array.isArray(color) ? color[i] : color, opacity).composite(add.sourceAlpha, 'in').offset(left, top).gaussianBlur(blur).merge(add.source);
         return add.blend(add.source, shadowBlur);
       } // directly adds dropShadow to the element and returns the same element.
@@ -1213,8 +1101,6 @@
     }, {
       key: "dropShadow",
       value: function dropShadow(el, attrs) {
-        var _w$config$chart$dropS2;
-
         var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         var top = attrs.top,
             left = attrs.left,
@@ -1228,14 +1114,6 @@
         if (Utils$1.isIE() && w.config.chart.type === 'radialBar') {
           // in radialbar charts, dropshadow is clipping actual drawing in IE
           return el;
-        }
-
-        if (((_w$config$chart$dropS2 = w.config.chart.dropShadow.enabledOnSeries) === null || _w$config$chart$dropS2 === void 0 ? void 0 : _w$config$chart$dropS2.length) > 0) {
-          var _w$config$chart$dropS3;
-
-          if (((_w$config$chart$dropS3 = w.config.chart.dropShadow.enabledOnSeries) === null || _w$config$chart$dropS3 === void 0 ? void 0 : _w$config$chart$dropS3.indexOf(i)) === -1) {
-            return el;
-          }
         }
 
         color = Array.isArray(color) ? color[i] : color;
@@ -1726,8 +1604,10 @@
           filters.getDefaultFilter(el, realIndex);
         } else {
           if (w.config.chart.dropShadow.enabled && drawShadow) {
-            var shadow = w.config.chart.dropShadow;
-            filters.dropShadow(el, shadow, realIndex);
+            if (!w.config.chart.dropShadow.enabledOnSeries || w.config.chart.dropShadow.enabledOnSeries && w.config.chart.dropShadow.enabledOnSeries.indexOf(realIndex) !== -1) {
+              var shadow = w.config.chart.dropShadow;
+              filters.dropShadow(el, shadow, realIndex);
+            }
           }
         }
 
@@ -1993,63 +1873,6 @@
         elText.node.style.opacity = opacity;
         return elText;
       }
-      /**
-       * Creates a group with given attributes.
-       * @param {number} x - The x-coordinate of the group.
-       * @param {number} y - The y-coordinate of the group.
-       * @param {Array} lines - The lines to be added to the group.
-       * @param {Object} opts - The options for the group.
-       * @returns {Object} The created group.
-       */
-
-    }, {
-      key: "createGroupWithAttributes",
-      value: function createGroupWithAttributes(x, y, lines, opts) {
-        var elPoint = this.group();
-        lines.forEach(function (line) {
-          return elPoint.add(line);
-        });
-        elPoint.attr({
-          class: opts.class ? opts.class : '',
-          cy: y,
-          cx: x
-        });
-        return elPoint;
-      }
-      /**
-       * Draws a plus sign at the given coordinates.
-       * @param {number} x - The x-coordinate of the plus sign.
-       * @param {number} y - The y-coordinate of the plus sign.
-       * @param {number} size - The size of the plus sign.
-       * @param {Object} opts - The options for the plus sign.
-       * @returns {Object} The created plus sign.
-       */
-
-    }, {
-      key: "drawPlus",
-      value: function drawPlus(x, y, size, opts) {
-        var halfSize = size / 2;
-        var line1 = this.drawLine(x, y - halfSize, x, y + halfSize, opts.pointStrokeColor, opts.pointStrokeDashArray, opts.pointStrokeWidth, opts.pointStrokeLineCap);
-        var line2 = this.drawLine(x - halfSize, y, x + halfSize, y, opts.pointStrokeColor, opts.pointStrokeDashArray, opts.pointStrokeWidth, opts.pointStrokeLineCap);
-        return this.createGroupWithAttributes(x, y, [line1, line2], opts);
-      }
-      /**
-       * Draws an 'X' at the given coordinates.
-       * @param {number} x - The x-coordinate of the 'X'.
-       * @param {number} y - The y-coordinate of the 'X'.
-       * @param {number} size - The size of the 'X'.
-       * @param {Object} opts - The options for the 'X'.
-       * @returns {Object} The created 'X'.
-       */
-
-    }, {
-      key: "drawX",
-      value: function drawX(x, y, size, opts) {
-        var halfSize = size / 2;
-        var line1 = this.drawLine(x - halfSize, y - halfSize, x + halfSize, y + halfSize, opts.pointStrokeColor, opts.pointStrokeDashArray, opts.pointStrokeWidth, opts.pointStrokeLineCap);
-        var line2 = this.drawLine(x - halfSize, y + halfSize, x + halfSize, y - halfSize, opts.pointStrokeColor, opts.pointStrokeDashArray, opts.pointStrokeWidth, opts.pointStrokeLineCap);
-        return this.createGroupWithAttributes(x, y, [line1, line2], opts);
-      }
     }, {
       key: "drawMarker",
       value: function drawMarker(x, y, opts) {
@@ -2057,11 +1880,7 @@
         var size = opts.pSize || 0;
         var elPoint = null;
 
-        if ((opts === null || opts === void 0 ? void 0 : opts.shape) === 'X' || (opts === null || opts === void 0 ? void 0 : opts.shape) === 'x') {
-          elPoint = this.drawX(x, y, size, opts);
-        } else if ((opts === null || opts === void 0 ? void 0 : opts.shape) === 'plus' || (opts === null || opts === void 0 ? void 0 : opts.shape) === '+') {
-          elPoint = this.drawPlus(x, y, size, opts);
-        } else if (opts.shape === 'square' || opts.shape === 'rect') {
+        if (opts.shape === 'square' || opts.shape === 'rect') {
           var radius = opts.pRadius === undefined ? size / 2 : opts.pRadius;
 
           if (y === null || !size) {
@@ -2763,24 +2582,20 @@
     }, {
       key: "extendArrayProps",
       value: function extendArrayProps(configInstance, options, w) {
-        var _options, _options2;
-
-        if ((_options = options) !== null && _options !== void 0 && _options.yaxis) {
+        if (options.yaxis) {
           options = configInstance.extendYAxis(options, w);
         }
 
-        if ((_options2 = options) !== null && _options2 !== void 0 && _options2.annotations) {
-          var _options3, _options3$annotations, _options4, _options4$annotations;
-
+        if (options.annotations) {
           if (options.annotations.yaxis) {
             options = configInstance.extendYAxisAnnotations(options);
           }
 
-          if ((_options3 = options) !== null && _options3 !== void 0 && (_options3$annotations = _options3.annotations) !== null && _options3$annotations !== void 0 && _options3$annotations.xaxis) {
+          if (options.annotations.xaxis) {
             options = configInstance.extendXAxisAnnotations(options);
           }
 
-          if ((_options4 = options) !== null && _options4 !== void 0 && (_options4$annotations = _options4.annotations) !== null && _options4$annotations !== void 0 && _options4$annotations.points) {
+          if (options.annotations.points) {
             options = configInstance.extendPointAnnotations(options);
           }
         }
@@ -2908,19 +2723,16 @@
         var w = this.w;
 
         if (this.annoCtx.invertAxis) {
-          var labels = w.globals.labels;
+          var catIndex = w.globals.labels.indexOf(y);
 
           if (w.config.xaxis.convertedCatToNumeric) {
-            labels = w.globals.categoryLabels;
+            catIndex = w.globals.categoryLabels.indexOf(y);
           }
 
-          var catIndex = labels.indexOf(y);
           var xLabel = w.globals.dom.baseEl.querySelector('.apexcharts-yaxis-texts-g text:nth-child(' + (catIndex + 1) + ')');
 
           if (xLabel) {
             yP = parseFloat(xLabel.getAttribute('y'));
-          } else {
-            yP = (w.globals.gridHeight / labels.length - 1) * (catIndex + 1) - w.globals.barHeight;
           }
 
           if (typeof anno.seriesIndex !== 'undefined') {
@@ -6267,6 +6079,7 @@
     }, {
       key: "polarArea",
       value: function polarArea() {
+        this.opts.yaxis[0].tickAmount = this.opts.yaxis[0].tickAmount ? this.opts.yaxis[0].tickAmount : 6;
         return {
           chart: {
             toolbar: {
@@ -6755,7 +6568,6 @@
         gl.zRange = 0;
         gl.dataPoints = 0;
         gl.xTickAmount = 0;
-        gl.multiAxisTickAmount = 0;
       }
     }, {
       key: "globalVars",
@@ -6840,6 +6652,7 @@
           // if a user enabled log scale but the data provided is not valid to generate a log scale, turn on this flag
           ignoreYAxisIndexes: [],
           // when series are being collapsed in multiple y axes, ignore certain index
+          yAxisSameScaleIndices: [],
           maxValsInArrayIndex: 0,
           radialSize: 0,
           selection: undefined,
@@ -6933,34 +6746,7 @@
           yAxisWidths: [],
           translateXAxisY: 0,
           translateXAxisX: 0,
-          tooltip: null,
-          // Rules for niceScaleAllowedMagMsd:
-          // 1) An array of two arrays only ([[],[]]):
-          //    * array[0][]: influences labelling of data series that contain only integers
-          //       - must contain only integers (or expect ugly ticks)
-          //    * array[1][]: influences labelling of data series that contain at least one float
-          //       - may contain floats
-          //    * both arrays:
-          //       - each array[][i] ideally satisfy: 10 mod array[][i] == 0 (or expect ugly ticks)
-          //       - to avoid clipping data point keep each array[][i] >= i
-          // 2) each array[i][] contains 11 values, for all possible index values 0..10.
-          //    array[][0] should not be needed (not proven) but ensures non-zero is returned.
-          // 
-          // Users can effectively force their preferred "magMsd" through stepSize and
-          // forceNiceScale. With forceNiceScale: true, stepSize becomes normalizable to the
-          // axis's min..max range, which allows users to set stepSize to an integer 1..10, for
-          // example, stepSize: 3. This value will be preferred to the value determined through
-          // this array. The range-normalized value is checked for consistency with other
-          // user defined options and will be ignored if inconsistent.
-          niceScaleAllowedMagMsd: [[1, 1, 2, 5, 5, 5, 10, 10, 10, 10, 10], [1, 1, 2, 5, 5, 5, 10, 10, 10, 10, 10]],
-          // Default ticks based on SVG size. These values have high numbers
-          // of divisors. The array is indexed using a calculated maxTicks value
-          // divided by 2 simply to halve the array size. See Scales.niceScale().
-          niceScaleDefaultTicks: [1, 2, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 12, 12, 12, 12, 12, 12, 12, 12, 12, 24],
-          seriesYAxisMap: [],
-          // Given yAxis index, return all series indices belonging to it. Multiple series can be referenced to each yAxis.
-          seriesYAxisReverseMap: [] // Given a Series index, return its yAxis index.
-
+          tooltip: null
         };
       }
     }, {
@@ -7842,9 +7628,8 @@
         var y = 0;
         var dataPointIndex = j;
         var elDataLabelsWrap = null;
-        var seriesCollapsed = w.globals.collapsedSeriesIndices.indexOf(i) !== -1;
 
-        if (seriesCollapsed || !dataLabelsConfig.enabled || !Array.isArray(pos.x)) {
+        if (!dataLabelsConfig.enabled || !Array.isArray(pos.x)) {
           return elDataLabelsWrap;
         }
 
@@ -8726,11 +8511,10 @@
           range = this.handleRangeDataFormat('array', ser, i);
         } else if (this.isFormatXY()) {
           range = this.handleRangeDataFormat('xy', ser, i);
-        } // Fix: RangeArea Chart: hide all series results in a crash #3984
+        }
 
-
-        gl.seriesRangeStart.push(range.start === undefined ? [] : range.start);
-        gl.seriesRangeEnd.push(range.end === undefined ? [] : range.end);
+        gl.seriesRangeStart.push(range.start);
+        gl.seriesRangeEnd.push(range.end);
         gl.seriesRange.push(range.rangeUniques); // check for overlaps to avoid clashes in a timeline chart
 
         gl.seriesRange.forEach(function (sr, si) {
@@ -9225,29 +9009,15 @@
     }, {
       key: "excludeCollapsedSeriesInYAxis",
       value: function excludeCollapsedSeriesInYAxis() {
-        var w = this.w; // fix issue #1215
-        // Post revision 3.46.0 there is no longer a strict one-to-one
-        // correspondence between series and Y axes.
-        // An axis can be ignored only while all series referenced by it
-        // are collapsed.
+        var _this2 = this;
 
-        var yAxisIndexes = [];
-        w.globals.seriesYAxisMap.forEach(function (yAxisArr, yi) {
-          var collapsedCount = 0;
-          yAxisArr.forEach(function (seriesIndex) {
-            if (w.globals.collapsedSeriesIndices.indexOf(seriesIndex) !== -1) {
-              collapsedCount++;
-            }
-          }); // It's possible to have a yaxis that doesn't reference any series yet,
-          // eg, because there are no series' yet, so don't list it as ignored
-          // prematurely.
-
-          if (collapsedCount > 0 && collapsedCount == yAxisArr.length) {
-            yAxisIndexes.push(yi);
+        var w = this.w;
+        w.globals.ignoreYAxisIndexes = w.globals.collapsedSeries.map(function (collapsed, i) {
+          // fix issue #1215
+          // if stacked, not returning collapsed.index to preserve yaxis
+          if (_this2.w.globals.isMultipleYAxis && !w.config.chart.stacked) {
+            return collapsed.index;
           }
-        });
-        w.globals.ignoreYAxisIndexes = yAxisIndexes.map(function (x) {
-          return x;
         });
       }
     }]);
@@ -9334,7 +9104,7 @@
 
         var allowDuplicatesInTimeScale = !w.config.xaxis.labels.showDuplicates && this.ctx.timeScale;
 
-        if (!Array.isArray(label) && (String(label) === 'NaN' || drawnLabels.indexOf(label) >= 0 && allowDuplicatesInTimeScale)) {
+        if (!Array.isArray(label) && (label.indexOf('NaN') === 0 || label.toLowerCase().indexOf('invalid') === 0 || label.toLowerCase().indexOf('infinity') >= 0 || drawnLabels.indexOf(label) >= 0 && allowDuplicatesInTimeScale)) {
           label = '';
         }
 
@@ -9407,10 +9177,7 @@
       value: function isYAxisHidden(index) {
         var w = this.w;
         var coreUtils = new CoreUtils(this.ctx);
-        var allCollapsed = !w.globals.seriesYAxisMap[index].some(function (si) {
-          return w.globals.collapsedSeriesIndices.indexOf(si) === -1;
-        });
-        return !w.config.yaxis[index].show || !w.config.yaxis[index].showForNullSeries && coreUtils.isSeriesNull(index) && allCollapsed;
+        return !w.config.yaxis[index].show || !w.config.yaxis[index].showForNullSeries && coreUtils.isSeriesNull(index) && w.globals.collapsedSeriesIndices.indexOf(index) === -1;
       } // get the label color for y-axis
       // realIndex is the actual series index, while i is the tick Index
 
@@ -10844,21 +10611,18 @@
           this.elgridLinesV.hide();
           this.elgridLinesH.hide();
           this.elGridBorders.hide();
-        } // Draw the grid using ticks from the first unhidden Yaxis,
-        // or yaxis[0] is all hidden.
-
-
-        var gridAxisIndex = 0;
-
-        while (gridAxisIndex < w.globals.seriesYAxisMap.length && w.globals.ignoreYAxisIndexes.indexOf(gridAxisIndex) !== -1) {
-          gridAxisIndex++;
         }
 
-        if (gridAxisIndex === w.globals.seriesYAxisMap.length) {
-          gridAxisIndex = 0;
+        var yTickAmount = w.globals.yAxisScale.length ? w.globals.yAxisScale[0].result.length - 1 : 5;
+
+        for (var i = 0; i < w.globals.series.length; i++) {
+          if (typeof w.globals.yAxisScale[i] !== 'undefined') {
+            yTickAmount = w.globals.yAxisScale[i].result.length - 1;
+          }
+
+          if (yTickAmount > 2) break;
         }
 
-        var yTickAmount = w.globals.yAxisScale[gridAxisIndex].result.length - 1;
         var xCount;
 
         if (!w.globals.isBarHorizontal || this.isRangeBar) {
@@ -10874,8 +10638,8 @@
               xCount = w.config.xaxis.tickAmount;
             }
 
-            if (((_w$globals$yAxisScale = w.globals.yAxisScale) === null || _w$globals$yAxisScale === void 0 ? void 0 : (_w$globals$yAxisScale2 = _w$globals$yAxisScale[gridAxisIndex]) === null || _w$globals$yAxisScale2 === void 0 ? void 0 : (_w$globals$yAxisScale3 = _w$globals$yAxisScale2.result) === null || _w$globals$yAxisScale3 === void 0 ? void 0 : _w$globals$yAxisScale3.length) > 0 && w.config.xaxis.type !== 'datetime') {
-              xCount = w.globals.yAxisScale[gridAxisIndex].result.length - 1;
+            if (((_w$globals$yAxisScale = w.globals.yAxisScale) === null || _w$globals$yAxisScale === void 0 ? void 0 : (_w$globals$yAxisScale2 = _w$globals$yAxisScale[0]) === null || _w$globals$yAxisScale2 === void 0 ? void 0 : (_w$globals$yAxisScale3 = _w$globals$yAxisScale2.result) === null || _w$globals$yAxisScale3 === void 0 ? void 0 : _w$globals$yAxisScale3.length) > 0 && w.config.xaxis.type !== 'datetime') {
+              xCount = w.globals.yAxisScale[0].result.length - 1;
             }
           }
 
@@ -10963,383 +10727,145 @@
     return Grid;
   }();
 
-  var Scales = /*#__PURE__*/function () {
-    function Scales(ctx) {
-      _classCallCheck(this, Scales);
+  var Range$1 = /*#__PURE__*/function () {
+    function Range(ctx) {
+      _classCallCheck(this, Range);
 
       this.ctx = ctx;
       this.w = ctx.w;
-    } // http://stackoverflow.com/questions/326679/choosing-an-attractive-linear-scale-for-a-graphs-y-axis
+    } // http://stackoverflow.com/questions/326679/choosing-an-attractive-linear-scale-for-a-graphs-y-axiss
     // This routine creates the Y axis values for a graph.
 
 
-    _createClass(Scales, [{
+    _createClass(Range, [{
       key: "niceScale",
       value: function niceScale(yMin, yMax) {
-        var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        // Calculate Min amd Max graphical labels and graph
-        // increments.
-        //
-        // Output will be an array of the Y axis values that
-        // encompass the Y values.
-        var jsPrecision = 1e-11; // JS precision errors
+        var ticks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
+        var index = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        var NO_MIN_MAX_PROVIDED = arguments.length > 4 ? arguments[4] : undefined;
+        var w = this.w; // Determine Range
 
-        var w = this.w;
-        var gl = w.globals;
-        var axisCnf;
-        var maxTicks;
-        var gotMin;
-        var gotMax;
-
-        if (gl.isBarHorizontal) {
-          axisCnf = w.config.xaxis; // The most ticks we can fit into the svg chart dimensions
-
-          maxTicks = Math.max((gl.svgWidth - 100) / 25, 2); // Guestimate
-        } else {
-          axisCnf = w.config.yaxis[index];
-          maxTicks = Math.max((gl.svgHeight - 100) / 15, 2);
-        }
-
-        gotMin = axisCnf.min !== undefined && axisCnf.min !== null;
-        gotMax = axisCnf.max !== undefined && axisCnf.min !== null;
-        var gotStepSize = axisCnf.stepSize !== undefined && axisCnf.stepSize !== null;
-        var gotTickAmount = axisCnf.tickAmount !== undefined && axisCnf.tickAmount !== null;
-        var ticks = gotTickAmount ? axisCnf.tickAmount : !axisCnf.forceNiceScale ? 10 : gl.niceScaleDefaultTicks[Math.min(Math.round(maxTicks / 2), gl.niceScaleDefaultTicks.length - 1)]; // In case we have a multi axis chart:
-        // Ensure subsequent series start with the same tickAmount as series[0],
-        // because the tick lines are drawn based on series[0]. This does not
-        // override user defined options for any series.
-
-        if (gl.isMultipleYAxis && !gotTickAmount && gl.multiAxisTickAmount > 0) {
-          ticks = gl.multiAxisTickAmount;
-          gotTickAmount = true;
-        }
+        var range = Math.abs(yMax - yMin);
+        ticks = this._adjustTicksForSmallRange(ticks, index, range);
 
         if (ticks === 'dataPoints') {
-          ticks = gl.dataPoints - 1;
-        } else {
-          // Ensure ticks is an integer
-          ticks = Math.abs(Math.round(ticks));
+          ticks = w.globals.dataPoints - 1;
         }
 
         if (yMin === Number.MIN_VALUE && yMax === 0 || !Utils$1.isNumber(yMin) && !Utils$1.isNumber(yMax) || yMin === Number.MIN_VALUE && yMax === -Number.MAX_VALUE) {
           // when all values are 0
           yMin = 0;
           yMax = ticks;
-          gl.allSeriesCollapsed = false;
+          var linearScale = this.linearScale(yMin, yMax, ticks, index, w.config.yaxis[index].stepSize);
+          return linearScale;
         }
 
         if (yMin > yMax) {
           // if somehow due to some wrong config, user sent max less than min,
           // adjust the min/max again
-          console.warn('axis.min cannot be greater than axis.max: swapping min and max');
-          var temp = yMax;
-          yMax = yMin;
-          yMin = temp;
+          console.warn('axis.min cannot be greater than axis.max');
+          yMax = yMin + 0.1;
         } else if (yMin === yMax) {
           // If yMin and yMax are identical, then
           // adjust the yMin and yMax values to actually
           // make a graph. Also avoids division by zero errors.
-          yMin = yMin === 0 ? 0 : yMin - 1; // choose an integer in case yValueDecimals=0
+          yMin = yMin === 0 ? 0 : yMin - 0.5; // some small value
 
-          yMax = yMax === 0 ? 2 : yMax + 1; // choose an integer in case yValueDecimals=0
-        }
+          yMax = yMax === 0 ? 2 : yMax + 0.5; // some small value
+        } // Calculate Min amd Max graphical labels and graph
+        // increments.  The number of ticks defaults to
+        // 10 which is the SUGGESTED value.  Any tick value
+        // entered is used as a suggested value which is
+        // adjusted to be a 'pretty' value.
+        //
+        // Output will be an array of the Y axis values that
+        // encompass the Y values.
+
 
         var result = [];
 
-        if (ticks < 1) {
-          ticks = 1;
+        if (range < 1 && NO_MIN_MAX_PROVIDED && (w.config.chart.type === 'candlestick' || w.config.series[index].type === 'candlestick' || w.config.chart.type === 'boxPlot' || w.config.series[index].type === 'boxPlot' || w.globals.isRangeData)) {
+          /* fix https://github.com/apexcharts/apexcharts.js/issues/430 */
+          yMax = yMax * 1.01;
         }
 
-        var tiks = ticks; // Determine Range
+        var tiks = ticks + 1; // Adjust ticks if needed
 
-        var range = Math.abs(yMax - yMin);
-
-        if (axisCnf.forceNiceScale) {
-          // Snap min or max to zero if close
-          var proximityRatio = 0.15;
-
-          if (!gotMin && yMin > 0 && yMin / range < proximityRatio) {
-            yMin = 0;
-            gotMin = true;
-          }
-
-          if (!gotMax && yMax < 0 && -yMax / range < proximityRatio) {
-            yMax = 0;
-            gotMax = true;
-          }
-
-          range = Math.abs(yMax - yMin);
-        } // Calculate a pretty step value based on ticks
-        // Initial stepSize
+        if (tiks < 2) {
+          tiks = 2;
+        } else if (tiks > 2) {
+          tiks -= 2;
+        } // Get raw step value
 
 
-        var stepSize = range / tiks;
-        var niceStep = stepSize;
-        var mag = Math.floor(Math.log10(niceStep));
-        var magPow = Math.pow(10, mag); // ceil() is used below in conjunction with the values populating
-        // niceScaleAllowedMagMsd[][] to ensure that (niceStep * tiks)
-        // produces a range that doesn't clip data points after stretching
-        // the raw range out a little to match the prospective new range.
+        var tempStep = range / tiks; // Calculate pretty step value
 
-        var magMsd = Math.ceil(niceStep / magPow); // See globals.js for info on what niceScaleAllowedMagMsd does
+        var mag = Math.floor(Utils$1.log10(tempStep));
+        var magPow = Math.pow(10, mag);
+        var magMsd = Math.round(tempStep / magPow);
 
-        magMsd = gl.niceScaleAllowedMagMsd[gl.yValueDecimal === 0 ? 0 : 1][magMsd];
-        niceStep = magMsd * magPow; // Initial stepSize
-
-        stepSize = niceStep; // Get step value
-
-        if (gl.isBarHorizontal && axisCnf.stepSize && axisCnf.type !== 'datetime') {
-          stepSize = axisCnf.stepSize;
-          gotStepSize = true;
-        } else if (gotStepSize) {
-          stepSize = axisCnf.stepSize;
+        if (magMsd < 1) {
+          magMsd = 1;
         }
 
-        if (gotStepSize) {
-          if (axisCnf.forceNiceScale) {
-            // Check that given stepSize is sane with respect to the range.
-            //
-            // The user can, by setting forceNiceScale = true,
-            // define a stepSize that will be scaled to a useful value before
-            // it's checked for consistency.
-            //
-            // If, for example, the range = 4 and the user defined stepSize = 8
-            // (or 8000 or 0.0008, etc), then stepSize is inapplicable as
-            // it is. Reducing it to 0.8 will fit with 5 ticks.
-            //
-            var stepMag = Math.floor(Math.log10(stepSize));
-            stepSize *= Math.pow(10, mag - stepMag);
-          }
-        } // Start applying some rules
+        var stepSize = magMsd * magPow;
 
-
-        if (gotMin && gotMax) {
-          var crudeStep = range / tiks; // min and max (range) cannot be changed
-
-          if (gotTickAmount) {
-            if (gotStepSize) {
-              if (Utils$1.mod(range, stepSize) != 0) {
-                // stepSize conflicts with range
-                var gcdStep = Utils$1.getGCD(stepSize, crudeStep); // gcdStep is a multiple of range because crudeStep is a multiple.
-                // gcdStep is also a multiple of stepSize, so it partially honoured
-                // All three could be equal, which would be very nice
-                // if the computed stepSize generates too many ticks they will be
-                // reduced later, unless the number is prime, in which case,
-                // the chart will display all of them or just one (plus the X axis)
-                // depending on svg dimensions. Setting forceNiceScale: true will force
-                // the display of at least the default number of ticks.
-
-                if (crudeStep / gcdStep < 10) {
-                  stepSize = gcdStep;
-                } else {
-                  // stepSize conflicts and no reasonable adjustment, but must
-                  // honour tickAmount
-                  stepSize = crudeStep;
-                }
-              } else {
-                // stepSize fits
-                if (Utils$1.mod(stepSize, crudeStep) == 0) {
-                  // crudeStep is a multiple of stepSize, or vice versa
-                  // but we know that crudeStep will generate tickAmount ticks
-                  stepSize = crudeStep;
-                } else {
-                  // stepSize conflicts with tickAmount
-                  // if the user is setting up a multi-axis chart and wants
-                  // synced axis ticks then they should not define stepSize
-                  // or ensure there is no conflict between any of their options
-                  // on any axis.
-                  crudeStep = stepSize; // De-prioritizing ticks from now on
-
-                  gotTickAmount = false;
-                }
-              }
-            } else {
-              // no user stepSize, honour tickAmount
-              stepSize = crudeStep;
-            }
-          } else {
-            // default ticks in use, tiks can change
-            if (gotStepSize) {
-              if (Utils$1.mod(range, stepSize) == 0) {
-                // user stepSize fits
-                crudeStep = stepSize;
-              } else {
-                stepSize = crudeStep;
-              }
-            } else {
-              // no user stepSize
-              if (Utils$1.mod(range, stepSize) == 0) {
-                // generated nice stepSize fits
-                crudeStep = stepSize;
-              } else {
-                tiks = Math.ceil(range / stepSize);
-                crudeStep = range / tiks;
-
-                var _gcdStep = Utils$1.getGCD(range, stepSize);
-
-                if (range / _gcdStep < maxTicks) {
-                  crudeStep = _gcdStep;
-                }
-
-                stepSize = crudeStep;
-              }
-            }
-          }
-
-          tiks = Math.round(range / stepSize);
-        } else {
-          // Snap range to ticks
-          if (!gotMin && !gotMax) {
-            if (gotTickAmount) {
-              // Allow a half-stepSize shift if series doesn't cross the X axis
-              // to ensure graph doesn't clip. Not if it does cross, in order
-              // to keep the 0 aligned with a grid line in multi axis charts.
-              var shift = stepSize / (yMax - yMin > yMax ? 1 : 2);
-              var tMin = shift * Math.floor(yMin / shift);
-
-              if (Math.abs(tMin - yMin) <= shift / 2) {
-                yMin = tMin;
-                yMax = yMin + stepSize * tiks;
-              } else {
-                yMax = shift * Math.ceil(yMax / shift);
-                yMin = yMax - stepSize * tiks;
-              }
-            } else {
-              yMin = stepSize * Math.floor(yMin / stepSize);
-              yMax = stepSize * Math.ceil(yMax / stepSize);
-            }
-          } else if (gotMax) {
-            if (gotTickAmount) {
-              yMin = yMax - stepSize * tiks;
-            } else {
-              var yMinPrev = yMin;
-              yMin = stepSize * Math.floor(yMin / stepSize);
-
-              if (Math.abs(yMax - yMin) / Utils$1.getGCD(range, stepSize) > maxTicks) {
-                // Use default ticks to compute yMin then shrinkwrap
-                yMin = yMax - stepSize * ticks;
-                yMin += stepSize * Math.floor((yMinPrev - yMin) / stepSize);
-              }
-            }
-          } else if (gotMin) {
-            if (gotTickAmount) {
-              yMax = yMin + stepSize * tiks;
-            } else {
-              yMax = stepSize * Math.ceil(yMax / stepSize);
-            }
-          }
-
-          range = Math.abs(yMax - yMin); // Final check and possible adjustment of stepSize to prevent
-          // overriding the user's min or max choice.
-
-          stepSize = Utils$1.getGCD(range, stepSize);
-          tiks = Math.round(range / stepSize);
-        } // Shrinkwrap ticks to the range
-
-
-        if (!gotTickAmount && !(gotMin || gotMax)) {
-          tiks = Math.ceil((range - jsPrecision) / (stepSize + jsPrecision)); // No user tickAmount, or min or max, we are free to adjust to avoid a
-          // prime number. This helps when reducing ticks for small svg dimensions.
-
-          if (tiks > 16 && Utils$1.getPrimeFactors(tiks).length < 2) {
-            tiks++;
-          }
-        } // Record final tiks for use by other series that call niceScale().
-        // Note: some don't, like logarithmicScale(), etc.
-
-
-        if (gl.isMultipleYAxis && gl.multiAxisTickAmount == 0) {
-          gl.multiAxisTickAmount = tiks;
+        if (w.config.yaxis[index].stepSize) {
+          stepSize = w.config.yaxis[index].stepSize;
         }
 
-        if (tiks > maxTicks && (!(gotTickAmount || gotStepSize) || axisCnf.forceNiceScale)) {
-          // Reduce the number of ticks nicely if chart svg dimensions shrink too far.
-          // The reduced tick set should always be a subset of the full set.
-          //
-          // This following products of prime factors method works as follows:
-          // We compute the prime factors of the full tick count (tiks), then all the
-          // possible products of those factors in order from smallest to biggest,
-          // until we find a product P such that: tiks/P < maxTicks.
-          //
-          // Example:
-          // Computing products of the prime factors of 30.
-          //
-          //   tiks | pf  |  1     2     3      4      5      6  <-- compute order
-          //   --------------------------------------------------
-          //     30 |  5  |              5             5      5  <-- Multiply all
-          //        |  3  |        3            3      3      3  <-- primes in each
-          //        |  2  |  2                  2             2  <-- column = P
-          //   --------------------------------------------------
-          //                15    10     6      5      2      1  <-- tiks/P
-          //
-          //   tiks = 30 has prime factors [2, 3, 5]
-          //   The loop below computes the products [2,3,5,6,15,30].
-          //   The last product of P = 2*3*5 is skipped since 30/P = 1.
-          //   This yields tiks/P = [15,10,6,5,2,1], checked in order until
-          //   tiks/P < maxTicks.
-          //
-          //   Pros:
-          //      1) The ticks in the reduced set are always members of the
-          //         full set of ticks.
-          //   Cons:
-          //      1) None: if tiks is prime, we get all or one, nothing between, so
-          //      the worst case is to display all, which is the status quo. Really
-          //      only a problem visually for larger tick numbers, say, > 7.
-          //
-          var pf = Utils$1.getPrimeFactors(tiks);
-          var last = pf.length - 1;
-          var tt = tiks;
-
-          reduceLoop: for (var xFactors = 0; xFactors < last; xFactors++) {
-            for (var lowest = 0; lowest <= last - xFactors; lowest++) {
-              var stop = Math.min(lowest + xFactors, last);
-              var t = tt;
-              var div = 1;
-
-              for (var next = lowest; next <= stop; next++) {
-                div *= pf[next];
-              }
-
-              t /= div;
-
-              if (t < maxTicks) {
-                tt = t;
-                break reduceLoop;
-              }
-            }
-          }
-
-          if (tt === tiks) {
-            // Could not reduce ticks at all, go all in and display just the
-            // X axis and one tick.
-            stepSize = range;
-          } else {
-            stepSize = range / tt;
-          }
+        if (w.globals.isBarHorizontal && w.config.xaxis.stepSize && w.config.xaxis.type !== 'datetime') {
+          stepSize = w.config.xaxis.stepSize;
         } // build Y label array.
+        // Lower and upper bounds calculations
 
 
-        var val = yMin - stepSize; // Ensure we don't under/over shoot due to JS precision errors.
-        // This also fixes (amongst others):
-        // https://github.com/apexcharts/apexcharts.js/issues/430
+        var lb = stepSize * Math.floor(yMin / stepSize);
+        var ub = stepSize * Math.ceil(yMax / stepSize); // Build array
 
-        var err = stepSize * jsPrecision;
+        var val = lb;
 
-        do {
-          val += stepSize;
-          result.push(Utils$1.stripNumber(val, 7));
-        } while (yMax - val > err);
+        if (NO_MIN_MAX_PROVIDED && range > 2) {
+          while (1) {
+            result.push(Utils$1.stripNumber(val, 7));
+            val += stepSize;
 
-        return {
-          result: result,
-          niceMin: result[0],
-          niceMax: result[result.length - 1]
-        };
+            if (val > ub) {
+              break;
+            }
+          }
+
+          return {
+            result: result,
+            niceMin: result[0],
+            niceMax: result[result.length - 1]
+          };
+        } else {
+          result = [];
+          var v = yMin;
+          result.push(Utils$1.stripNumber(v, 7));
+          var valuesDivider = Math.abs(yMax - yMin) / ticks;
+
+          for (var i = 0; i <= ticks; i++) {
+            v = v + valuesDivider;
+            result.push(v);
+          }
+
+          if (result[result.length - 2] >= yMax) {
+            result.pop();
+          }
+
+          return {
+            result: result,
+            niceMin: result[0],
+            niceMax: result[result.length - 1]
+          };
+        }
       }
     }, {
       key: "linearScale",
       value: function linearScale(yMin, yMax) {
-        var ticks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
+        var ticks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
         var index = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
         var step = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
         var range = Math.abs(yMax - yMin);
@@ -11452,23 +10978,32 @@
           gl.yAxisScale[index] = [];
         }
 
-        var range = Math.abs(maxY - minY);
+        var diff = Math.abs(maxY - minY);
 
-        if (y.logarithmic && range <= 5) {
+        if (y.logarithmic && diff <= 5) {
           gl.invalidLogScale = true;
         }
 
-        if (y.logarithmic && range > 5) {
+        if (y.logarithmic && diff > 5) {
           gl.allSeriesCollapsed = false;
+          gl.yAxisScale[index] = this.logarithmicScale(minY, maxY, y.logBase);
           gl.yAxisScale[index] = y.forceNiceScale ? this.logarithmicScaleNice(minY, maxY, y.logBase) : this.logarithmicScale(minY, maxY, y.logBase);
         } else {
           if (maxY === -Number.MAX_VALUE || !Utils$1.isNumber(maxY)) {
             // no data in the chart. Either all series collapsed or user passed a blank array
-            gl.yAxisScale[index] = this.linearScale(0, 10, 10, index, cnf.yaxis[index].stepSize);
+            gl.yAxisScale[index] = this.linearScale(0, 5, 5, index, cnf.yaxis[index].stepSize);
           } else {
             // there is some data. Turn off the allSeriesCollapsed flag
             gl.allSeriesCollapsed = false;
-            gl.yAxisScale[index] = this.niceScale(minY, maxY, index);
+
+            if ((y.min !== undefined || y.max !== undefined) && !y.forceNiceScale) {
+              // fix https://github.com/apexcharts/apexcharts.js/issues/492
+              gl.yAxisScale[index] = this.linearScale(minY, maxY, y.tickAmount, index, cnf.yaxis[index].stepSize);
+            } else {
+              var noMinMaxProvided = cnf.yaxis[index].max === undefined && cnf.yaxis[index].min === undefined || cnf.yaxis[index].forceNiceScale;
+              gl.yAxisScale[index] = this.niceScale(minY, maxY, y.tickAmount ? y.tickAmount : diff < 5 && diff > 1 ? diff + 1 : 5, index, // fix https://github.com/apexcharts/apexcharts.js/issues/397
+              noMinMaxProvided);
+            }
           }
         }
       }
@@ -11481,9 +11016,9 @@
 
         if (maxX === -Number.MAX_VALUE || !Utils$1.isNumber(maxX)) {
           // no data in the chart. Either all series collapsed or user passed a blank array
-          gl.xAxisScale = this.linearScale(0, 10, 10);
+          gl.xAxisScale = this.linearScale(0, 5, 5);
         } else {
-          gl.xAxisScale = this.linearScale(minX, maxX, w.config.xaxis.tickAmount ? w.config.xaxis.tickAmount : diff < 10 && diff > 1 ? diff + 1 : 10, 0, w.config.xaxis.stepSize);
+          gl.xAxisScale = this.linearScale(minX, maxX, w.config.xaxis.tickAmount ? w.config.xaxis.tickAmount : diff < 5 && diff > 1 ? diff + 1 : 5, 0, w.config.xaxis.stepSize);
         }
 
         return gl.xAxisScale;
@@ -11491,238 +11026,276 @@
     }, {
       key: "setMultipleYScales",
       value: function setMultipleYScales() {
+        var _this = this;
+
         var gl = this.w.globals;
         var cnf = this.w.config;
-        var minYArr = gl.minYArr;
-        var maxYArr = gl.maxYArr;
-        var axisSeriesMap = [];
-        var seriesYAxisReverseMap = [];
-        var unassignedSeriesIndices = [];
-        cnf.series.forEach(function (s, i) {
-          unassignedSeriesIndices.push(i);
-          seriesYAxisReverseMap.push(null);
-        });
-        var unassignedYAxisIndices = []; // here, we loop through the yaxis array and find the item which has "seriesName" property
+        var minYArr = gl.minYArr.concat([]);
+        var maxYArr = gl.maxYArr.concat([]);
+        var scalesIndices = []; // here, we loop through the yaxis array and find the item which has "seriesName" property
 
-        cnf.yaxis.forEach(function (yaxe, yi) {
-          // Allow seriesName to be either a string (for backward compatibility),
-          // in which case, handle multiple yaxes referencing the same series.
-          // or an array of strings so that a yaxis can reference multiple series.
-          // Feature request #4237
-          if (yaxe.seriesName) {
-            var seriesNames = [];
+        cnf.yaxis.forEach(function (yaxe, i) {
+          var index = i;
+          cnf.series.forEach(function (s, si) {
+            // if seriesName matches and that series is not collapsed, we use that scale
+            // fix issue #1215
+            // proceed even if si is in gl.collapsedSeriesIndices
+            if (s.name === yaxe.seriesName) {
+              index = si;
 
-            if (Array.isArray(yaxe.seriesName)) {
-              seriesNames = yaxe.seriesName;
-            } else {
-              seriesNames.push(yaxe.seriesName);
+              if (i !== si) {
+                scalesIndices.push({
+                  index: si,
+                  similarIndex: i,
+                  alreadyExists: true
+                });
+              } else {
+                scalesIndices.push({
+                  index: si
+                });
+              }
             }
-
-            axisSeriesMap[yi] = [];
-            seriesNames.forEach(function (name) {
-              cnf.series.forEach(function (s, si) {
-                // if seriesName matches we use that scale.
-                if (s.name === name) {
-                  axisSeriesMap[yi].push(si);
-                  seriesYAxisReverseMap[si] = yi;
-                  var remove = unassignedSeriesIndices.indexOf(si);
-                  unassignedSeriesIndices.splice(remove, 1);
-                }
-              });
-            });
-          } else {
-            unassignedYAxisIndices.push(yi);
-          }
-        }); // All series referenced directly by yaxes have been assigned to those axes.
-        // Any series so far unassigned will be assigned to any yaxes that have yet
-        // to reference series directly, one-for-one in order of appearance, with
-        // all left-over series assigned to the last such yaxis. This captures the
-        // default single and multiaxis config options which simply includes zero,
-        // one or as many yaxes as there are series but do not reference them by name.
-
-        var lastUnassignedYAxis;
-
-        for (var i = 0; i < unassignedYAxisIndices.length; i++) {
-          lastUnassignedYAxis = unassignedYAxisIndices[i];
-          axisSeriesMap[lastUnassignedYAxis] = [];
-
-          if (unassignedSeriesIndices) {
-            var si = unassignedSeriesIndices[0];
-            unassignedSeriesIndices.shift();
-            axisSeriesMap[lastUnassignedYAxis].push(si);
-            seriesYAxisReverseMap[si] = lastUnassignedYAxis;
-          } else {
-            break;
-          }
-        }
-
-        if (lastUnassignedYAxis) {
-          unassignedSeriesIndices.forEach(function (i) {
-            axisSeriesMap[lastUnassignedYAxis].push(i);
-            seriesYAxisReverseMap[i] = lastUnassignedYAxis;
           });
-        }
+          var minY = minYArr[index];
+          var maxY = maxYArr[index];
 
-        gl.seriesYAxisMap = axisSeriesMap.map(function (x) {
-          return x;
+          _this.setYScaleForIndex(i, minY, maxY);
         });
-        gl.seriesYAxisReverseMap = seriesYAxisReverseMap.map(function (x) {
-          return x;
-        });
-        this.sameScaleInMultipleAxes(minYArr, maxYArr, axisSeriesMap);
+        this.sameScaleInMultipleAxes(minYArr, maxYArr, scalesIndices);
       }
     }, {
       key: "sameScaleInMultipleAxes",
-      value: function sameScaleInMultipleAxes(minYArr, maxYArr, axisSeriesMap) {
-        var _this = this;
+      value: function sameScaleInMultipleAxes(minYArr, maxYArr, scalesIndices) {
+        var _this2 = this;
 
         var cnf = this.w.config;
-        var gl = this.w.globals; // The current config method to map multiple series to a y axis is to
-        // include one yaxis config per series but set each yaxis seriesName to the
-        // same series name. This relies on indexing equivalence to map series to
-        // an axis: series[n] => yaxis[n]. This needs to be retained for compatibility.
-        // But we introduce an alternative that explicitly configures yaxis elements
-        // with the series that will be referenced to them (seriesName: []). This
-        // only requires including the yaxis elements that will be seen on the chart.
-        // Old way:
-        // ya: s
-        // 0: 0
-        // 1: 1
-        // 2: 1
-        // 3: 1
-        // 4: 1
-        // Axes 0..4 are all scaled and all will be rendered unless the axes are
-        // show: false. If the chart is stacked, it's assumed that series 1..4 are
-        // the contributing series. This is not particularly intuitive.
-        // New way:
-        // ya: s
-        // 0: [0]
-        // 1: [1,2,3,4]
-        // If the chart is stacked, it can be assumed that any axis with multiple
-        // series is stacked.
-        // First things first, convert the old to the new.
+        var gl = this.w.globals; // we got the scalesIndices array in the above code, but we need to filter out the items which doesn't have same scales
 
-        var emptyAxes = [];
-        axisSeriesMap.forEach(function (axisSeries, ai) {
-          for (var si = ai + 1; si < axisSeriesMap.length; si++) {
-            var iter = axisSeries.values();
-
-            var _iterator = _createForOfIteratorHelper(iter),
-                _step;
-
-            try {
-              for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                var val = _step.value;
-                var i = axisSeriesMap[si].indexOf(val);
-
-                if (i !== -1) {
-                  axisSeries.push(si); // add series index to current yaxis
-
-                  axisSeriesMap[si].splice(i, 1); // remove it from its old yaxis
-                }
-              }
-            } catch (err) {
-              _iterator.e(err);
-            } finally {
-              _iterator.f();
+        var similarIndices = [];
+        scalesIndices.forEach(function (scale) {
+          if (scale.alreadyExists) {
+            if (typeof similarIndices[scale.index] === 'undefined') {
+              similarIndices[scale.index] = [];
             }
 
-            if (axisSeriesMap[si].length < 1 && emptyAxes.indexOf(si) === -1) {
-              emptyAxes.push(si);
-            }
+            similarIndices[scale.index].push(scale.index);
+            similarIndices[scale.index].push(scale.similarIndex);
           }
         });
 
-        for (var i = emptyAxes.length - 1; i >= 0; i--) {
-          axisSeriesMap.splice(emptyAxes[i], 1);
-        } // Compute min..max for each yaxis
-        // 
+        function intersect(a, b) {
+          return a.filter(function (value) {
+            return b.indexOf(value) !== -1;
+          });
+        }
 
-
-        axisSeriesMap.forEach(function (axisSeries, ai) {
-          var minY = Number.MAX_VALUE;
-          var maxY = -Number.MAX_VALUE;
-
-          if (cnf.chart.stacked) {
-            var sumSeries = gl.seriesX[axisSeries[0]].map(function (x) {
-              return Number.MIN_VALUE;
-            });
-            var posSeries = gl.seriesX[axisSeries[0]].map(function (x) {
-              return Number.MIN_VALUE;
-            });
-            var negSeries = gl.seriesX[axisSeries[0]].map(function (x) {
-              return Number.MIN_VALUE;
-            }); // The first series bound to the axis sets the type for stacked series
-
-            var seriesType = cnf.series[axisSeries[0]].type;
-
-            for (var _i = 0; _i < axisSeries.length; _i++) {
-              // Sum all series for this yaxis at each corresponding datapoint
-              // For bar and column charts we need to keep positive and negative
-              // values separate.
-              var si = axisSeries[_i];
-
-              if (gl.collapsedSeriesIndices.indexOf(si) === -1) {
-                for (var j = 0; j < gl.series[si].length; j++) {
-                  var val = gl.series[si][j];
-
-                  if (val >= 0) {
-                    posSeries[j] += val;
-                  } else {
-                    negSeries[j] += val;
-                  }
-
-                  sumSeries[j] += val;
-                }
+        gl.yAxisSameScaleIndices = similarIndices;
+        similarIndices.forEach(function (si, i) {
+          similarIndices.forEach(function (sj, j) {
+            if (i !== j) {
+              if (intersect(si, sj).length > 0) {
+                similarIndices[i] = similarIndices[i].concat(similarIndices[j]);
               }
             }
+          });
+        }); // then, we remove duplicates from the similarScale array
 
-            if (seriesType === 'bar') {
-              minY = Math.min.apply(null, negSeries);
-              maxY = Math.max.apply(null, posSeries);
-            } else {
-              minY = Math.min.apply(null, sumSeries);
-              maxY = Math.max.apply(null, sumSeries);
+        var uniqueSimilarIndices = similarIndices.map(function (item) {
+          return item.filter(function (i, pos) {
+            return item.indexOf(i) === pos;
+          });
+        }); // sort further to remove whole duplicate arrays later
+
+        var sortedIndices = uniqueSimilarIndices.map(function (s) {
+          return s.sort();
+        }); // remove undefined items
+
+        similarIndices = similarIndices.filter(function (s) {
+          return !!s;
+        });
+        var indices = sortedIndices.slice();
+        var stringIndices = indices.map(function (ind) {
+          return JSON.stringify(ind);
+        });
+        indices = indices.filter(function (ind, p) {
+          return stringIndices.indexOf(JSON.stringify(ind)) === p;
+        });
+        var sameScaleMinYArr = [];
+        var sameScaleMaxYArr = [];
+        minYArr.forEach(function (minYValue, yi) {
+          indices.forEach(function (scale, i) {
+            // we compare only the yIndex which exists in the indices array
+            if (scale.indexOf(yi) > -1) {
+              if (typeof sameScaleMinYArr[i] === 'undefined') {
+                sameScaleMinYArr[i] = [];
+                sameScaleMaxYArr[i] = [];
+              }
+
+              sameScaleMinYArr[i].push({
+                key: yi,
+                value: minYValue
+              });
+              sameScaleMaxYArr[i].push({
+                key: yi,
+                value: maxYArr[yi]
+              });
             }
-          } else {
-            for (var _i2 = 0; _i2 < axisSeries.length; _i2++) {
-              minY = Math.min(minY, minYArr[axisSeries[_i2]]);
-            }
-
-            for (var _i3 = 0; _i3 < axisSeries.length; _i3++) {
-              maxY = Math.max(maxY, maxYArr[axisSeries[_i3]]);
-            }
-          }
-
-          if (cnf.yaxis[ai].min !== undefined) {
-            if (typeof cnf.yaxis[ai].min === 'function') {
-              minY = cnf.yaxis[ai].min(minY);
-            } else {
-              minY = cnf.yaxis[ai].min;
-            }
-          }
-
-          if (cnf.yaxis[ai].max !== undefined) {
-            if (typeof cnf.yaxis[ai].max === 'function') {
-              maxY = cnf.yaxis[ai].max(maxY);
-            } else {
-              maxY = cnf.yaxis[ai].max;
-            }
-          } // Set the scale for this yaxis
-
-
-          _this.setYScaleForIndex(ai, minY, maxY); // Set individual series min and max to nice values
-
-
-          axisSeries.forEach(function (si) {
-            minYArr[si] = gl.yAxisScale[ai].niceMin;
-            maxYArr[si] = gl.yAxisScale[ai].niceMax;
           });
         });
+        var sameScaleMin = Array.apply(null, Array(indices.length)).map(Number.prototype.valueOf, Number.MIN_VALUE);
+        var sameScaleMax = Array.apply(null, Array(indices.length)).map(Number.prototype.valueOf, -Number.MAX_VALUE);
+        sameScaleMinYArr.forEach(function (s, i) {
+          s.forEach(function (sc, j) {
+            sameScaleMin[i] = Math.min(sc.value, sameScaleMin[i]);
+          });
+        });
+        sameScaleMaxYArr.forEach(function (s, i) {
+          s.forEach(function (sc, j) {
+            sameScaleMax[i] = Math.max(sc.value, sameScaleMax[i]);
+          });
+        });
+        minYArr.forEach(function (min, i) {
+          sameScaleMaxYArr.forEach(function (s, si) {
+            var minY = sameScaleMin[si];
+            var maxY = sameScaleMax[si];
+
+            if (cnf.chart.stacked) {
+              // for stacked charts, we need to add the values
+              maxY = 0;
+              s.forEach(function (ind, k) {
+                // fix incorrectly adjust y scale issue #1215
+                if (ind.value !== -Number.MAX_VALUE) {
+                  maxY += ind.value;
+                }
+
+                if (minY !== Number.MIN_VALUE) {
+                  minY += sameScaleMinYArr[si][k].value;
+                }
+              });
+            }
+
+            s.forEach(function (ind, k) {
+              if (s[k].key === i) {
+                if (cnf.yaxis[i].min !== undefined) {
+                  if (typeof cnf.yaxis[i].min === 'function') {
+                    minY = cnf.yaxis[i].min(gl.minY);
+                  } else {
+                    minY = cnf.yaxis[i].min;
+                  }
+                }
+
+                if (cnf.yaxis[i].max !== undefined) {
+                  if (typeof cnf.yaxis[i].max === 'function') {
+                    maxY = cnf.yaxis[i].max(gl.maxY);
+                  } else {
+                    maxY = cnf.yaxis[i].max;
+                  }
+                }
+
+                _this2.setYScaleForIndex(i, minY, maxY);
+              }
+            });
+          });
+        });
+      } // experimental feature which scales the y-axis to a min/max based on x-axis range
+
+    }, {
+      key: "autoScaleY",
+      value: function autoScaleY(ctx, yaxis, e) {
+        if (!ctx) {
+          ctx = this;
+        }
+
+        var w = ctx.w;
+
+        if (w.globals.isMultipleYAxis || w.globals.collapsedSeries.length) {
+          // The autoScale option for multiple y-axis is turned off as it leads to buggy behavior.
+          // Also, when a series is collapsed, it results in incorrect behavior. Hence turned it off for that too - fixes apexcharts.js#795
+          console.warn('autoScaleYaxis not supported in a multi-yaxis chart.');
+          return yaxis;
+        }
+
+        var seriesX = w.globals.seriesX[0];
+        var isStacked = w.config.chart.stacked;
+        yaxis.forEach(function (yaxe, yi) {
+          var firstXIndex = 0;
+
+          for (var xi = 0; xi < seriesX.length; xi++) {
+            if (seriesX[xi] >= e.xaxis.min) {
+              firstXIndex = xi;
+              break;
+            }
+          }
+
+          var initialMin = w.globals.minYArr[yi];
+          var initialMax = w.globals.maxYArr[yi];
+          var min, max;
+          var stackedSer = w.globals.stackedSeriesTotals;
+          w.globals.series.forEach(function (serie, sI) {
+            var firstValue = serie[firstXIndex];
+
+            if (isStacked) {
+              firstValue = stackedSer[firstXIndex];
+              min = max = firstValue;
+              stackedSer.forEach(function (y, yI) {
+                if (seriesX[yI] <= e.xaxis.max && seriesX[yI] >= e.xaxis.min) {
+                  if (y > max && y !== null) max = y;
+                  if (serie[yI] < min && serie[yI] !== null) min = serie[yI];
+                }
+              });
+            } else {
+              min = max = firstValue;
+              serie.forEach(function (y, yI) {
+                if (seriesX[yI] <= e.xaxis.max && seriesX[yI] >= e.xaxis.min) {
+                  var valMin = y;
+                  var valMax = y;
+                  w.globals.series.forEach(function (wS, wSI) {
+                    if (y !== null) {
+                      valMin = Math.min(wS[yI], valMin);
+                      valMax = Math.max(wS[yI], valMax);
+                    }
+                  });
+                  if (valMax > max && valMax !== null) max = valMax;
+                  if (valMin < min && valMin !== null) min = valMin;
+                }
+              });
+            }
+
+            if (min === undefined && max === undefined) {
+              min = initialMin;
+              max = initialMax;
+            }
+
+            min *= min < 0 ? 1.1 : 0.9;
+            max *= max < 0 ? 0.9 : 1.1;
+
+            if (min === 0 && max === 0) {
+              min = -1;
+              max = 1;
+            }
+
+            if (max < 0 && max < initialMax) {
+              max = initialMax;
+            }
+
+            if (min < 0 && min > initialMin) {
+              min = initialMin;
+            }
+
+            if (yaxis.length > 1) {
+              yaxis[sI].min = yaxe.min === undefined ? min : yaxe.min;
+              yaxis[sI].max = yaxe.max === undefined ? max : yaxe.max;
+            } else {
+              yaxis[0].min = yaxe.min === undefined ? min : yaxe.min;
+              yaxis[0].max = yaxe.max === undefined ? max : yaxe.max;
+            }
+          });
+        });
+        return yaxis;
       }
     }]);
 
-    return Scales;
+    return Range;
   }();
 
   /**
@@ -11737,7 +11310,7 @@
 
       this.ctx = ctx;
       this.w = ctx.w;
-      this.scales = new Scales(ctx);
+      this.scales = new Range$1(ctx);
     }
 
     _createClass(Range, [{
@@ -11749,43 +11322,17 @@
       }
     }, {
       key: "getMinYMaxY",
-      value: function getMinYMaxY(startingSeriesIndex) {
+      value: function getMinYMaxY(startingIndex) {
         var lowestY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Number.MAX_VALUE;
         var highestY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -Number.MAX_VALUE;
-        var endingSeriesIndex = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+        var len = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
         var cnf = this.w.config;
         var gl = this.w.globals;
         var maxY = -Number.MAX_VALUE;
         var minY = Number.MIN_VALUE;
 
-        if (endingSeriesIndex === null) {
-          endingSeriesIndex = startingSeriesIndex + 1;
-        }
-
-        var firstXIndex = 0;
-        var lastXIndex = 0;
-        var seriesX = undefined;
-
-        if (gl.seriesX.length >= endingSeriesIndex) {
-          var _ref, _gl$brushSource;
-
-          seriesX = _toConsumableArray(new Set((_ref = []).concat.apply(_ref, _toConsumableArray(gl.seriesX.slice(startingSeriesIndex, endingSeriesIndex)))));
-          firstXIndex = 0;
-          lastXIndex = seriesX.length - 1; // Eventually brushSource will be set if the current chart is a target.
-          // That is, after the appropriate event causes us to update.
-
-          var brush = (_gl$brushSource = gl.brushSource) === null || _gl$brushSource === void 0 ? void 0 : _gl$brushSource.w.config.chart.brush;
-
-          if (cnf.chart.zoom.enabled && cnf.chart.zoom.autoScaleYaxis || brush !== null && brush !== void 0 && brush.enabled && brush !== null && brush !== void 0 && brush.autoScaleYaxis) {
-            // Scale the Y axis to the min..max within the zoomed X axis domain.
-            if (cnf.xaxis.min) {
-              for (firstXIndex = 0; firstXIndex < lastXIndex && seriesX[firstXIndex] <= cnf.xaxis.min; firstXIndex++) {}
-            }
-
-            if (cnf.xaxis.max) {
-              for (; lastXIndex > firstXIndex && seriesX[lastXIndex] >= cnf.xaxis.max; lastXIndex--) {}
-            }
-          }
+        if (len === null) {
+          len = startingIndex + 1;
         }
 
         var series = gl.series;
@@ -11803,9 +11350,8 @@
           seriesMax = gl.seriesRangeEnd;
         }
 
-        for (var i = startingSeriesIndex; i < endingSeriesIndex; i++) {
+        for (var i = startingIndex; i < len; i++) {
           gl.dataPoints = Math.max(gl.dataPoints, series[i].length);
-          var seriesType = cnf.series[i].type;
 
           if (gl.categoryLabels.length) {
             gl.dataPoints = gl.categoryLabels.filter(function (label) {
@@ -11820,12 +11366,7 @@
             gl.dataPoints = Math.max(gl.dataPoints, gl.labels.length);
           }
 
-          if (!seriesX) {
-            firstXIndex = 0;
-            lastXIndex = gl.series[i].length;
-          }
-
-          for (var j = firstXIndex; j <= lastXIndex && j < gl.series[i].length; j++) {
+          for (var j = 0; j < gl.series[i].length; j++) {
             var val = series[i][j];
 
             if (val !== null && Utils$1.isNumber(val)) {
@@ -11837,38 +11378,30 @@
               if (typeof seriesMin[i][j] !== 'undefined') {
                 lowestY = Math.min(lowestY, seriesMin[i][j]);
                 highestY = Math.max(highestY, seriesMin[i][j]);
-              } // These series arrays are dual purpose:
-              // Array      : CandleO, CandleH, CandleM, CandleL, CandleC
-              // Candlestick: O        H                 L        C
-              // Boxplot    : Min      Q1       Median   Q3       Max
-
-
-              switch (seriesType) {
-                case 'candlestick':
-                  {
-                    if (typeof gl.seriesCandleC[i][j] !== 'undefined') {
-                      maxY = Math.max(maxY, gl.seriesCandleH[i][j]);
-                      lowestY = Math.min(lowestY, gl.seriesCandleL[i][j]);
-                    }
-                  }
-
-                case 'boxPlot':
-                  {
-                    if (typeof gl.seriesCandleC[i][j] !== 'undefined') {
-                      maxY = Math.max(maxY, gl.seriesCandleC[i][j]);
-                      lowestY = Math.min(lowestY, gl.seriesCandleO[i][j]);
-                    }
-                  }
-              } // there is a combo chart and the specified series in not either
-              // candlestick, boxplot, or rangeArea/rangeBar; find the max there.
-
-
-              if (seriesType && seriesType !== 'candlestick' && seriesType !== 'boxPlot' && seriesType !== 'rangeArea' && seriesType !== 'rangeBar') {
-                maxY = Math.max(maxY, gl.series[i][j]);
-                lowestY = Math.min(lowestY, gl.series[i][j]);
               }
 
-              highestY = maxY;
+              if (this.w.config.chart.type === 'candlestick' || this.w.config.chart.type === 'boxPlot' || this.w.config.chart.type !== 'rangeArea' || this.w.config.chart.type !== 'rangeBar') {
+                if (this.w.config.chart.type === 'candlestick' || this.w.config.chart.type === 'boxPlot') {
+                  if (typeof gl.seriesCandleC[i][j] !== 'undefined') {
+                    maxY = Math.max(maxY, gl.seriesCandleO[i][j]);
+                    maxY = Math.max(maxY, gl.seriesCandleH[i][j]);
+                    maxY = Math.max(maxY, gl.seriesCandleL[i][j]);
+                    maxY = Math.max(maxY, gl.seriesCandleC[i][j]);
+
+                    if (this.w.config.chart.type === 'boxPlot') {
+                      maxY = Math.max(maxY, gl.seriesCandleM[i][j]);
+                    }
+                  }
+                } // there is a combo chart and the specified series in not either candlestick, boxplot, or rangeArea/rangeBar; find the max there
+
+
+                if (cnf.series[i].type && (cnf.series[i].type !== 'candlestick' || cnf.series[i].type !== 'boxPlot' || cnf.series[i].type !== 'rangeArea' || cnf.series[i].type !== 'rangeBar')) {
+                  maxY = Math.max(maxY, gl.series[i][j]);
+                  lowestY = Math.min(lowestY, gl.series[i][j]);
+                }
+
+                highestY = maxY;
+              }
 
               if (gl.seriesGoals[i] && gl.seriesGoals[i][j] && Array.isArray(gl.seriesGoals[i][j])) {
                 gl.seriesGoals[i][j].forEach(function (g) {
@@ -11892,19 +11425,6 @@
               }
             } else {
               gl.hasNullValues = true;
-            }
-          }
-
-          if (seriesType === 'bar' || seriesType === 'column') {
-            if (minY < 0 && maxY < 0) {
-              // all negative values in a bar series, hence make the max to 0
-              maxY = 0;
-              highestY = Math.max(highestY, 0);
-            }
-
-            if (minY === Number.MIN_VALUE) {
-              minY = 0;
-              lowestY = Math.min(lowestY, 0);
             }
           }
         }
@@ -11939,48 +11459,52 @@
         gl.maxY = -Number.MAX_VALUE;
         gl.minY = Number.MIN_VALUE;
         var lowestYInAllSeries = Number.MAX_VALUE;
-        var minYMaxY;
 
         if (gl.isMultipleYAxis) {
           // we need to get minY and maxY for multiple y axis
-          lowestYInAllSeries = Number.MAX_VALUE;
-
           for (var i = 0; i < gl.series.length; i++) {
-            minYMaxY = this.getMinYMaxY(i);
-            gl.minYArr[i] = minYMaxY.lowestY;
-            gl.maxYArr[i] = minYMaxY.highestY;
-            lowestYInAllSeries = Math.min(lowestYInAllSeries, minYMaxY.lowestY);
+            var minYMaxYArr = this.getMinYMaxY(i, lowestYInAllSeries, null, i + 1);
+            gl.minYArr.push(minYMaxYArr.minY);
+            gl.maxYArr.push(minYMaxYArr.maxY);
+            lowestYInAllSeries = minYMaxYArr.lowestY;
           }
         } // and then, get the minY and maxY from all series
 
 
-        minYMaxY = this.getMinYMaxY(0, lowestYInAllSeries, null, gl.series.length);
-
-        if (cnf.chart.type === 'bar') {
-          gl.minY = minYMaxY.minY;
-          gl.maxY = minYMaxY.maxY;
-        } else {
-          gl.minY = minYMaxY.lowestY;
-          gl.maxY = minYMaxY.highestY;
-        }
-
+        var minYMaxY = this.getMinYMaxY(0, lowestYInAllSeries, null, gl.series.length);
+        gl.minY = minYMaxY.minY;
+        gl.maxY = minYMaxY.maxY;
         lowestYInAllSeries = minYMaxY.lowestY;
 
         if (cnf.chart.stacked) {
           this._setStackedMinMax();
         } // if the numbers are too big, reduce the range
-        // for eg, if number is between 100000-110000, putting 0 as the lowest
-        // value is not so good idea. So change the gl.minY for
-        // line/area/scatter/candlesticks/boxPlot/vertical rangebar
+        // for eg, if number is between 100000-110000, putting 0 as the lowest value is not so good idea. So change the gl.minY for line/area/candlesticks/boxPlot
 
 
-        if (cnf.chart.type === 'line' || cnf.chart.type === 'area' || cnf.chart.type === 'scatter' || cnf.chart.type === 'candlestick' || cnf.chart.type === 'boxPlot' || cnf.chart.type === 'rangeBar' && !gl.isBarHorizontal) {
+        if (cnf.chart.type === 'line' || cnf.chart.type === 'area' || cnf.chart.type === 'candlestick' || cnf.chart.type === 'boxPlot' || cnf.chart.type === 'rangeBar' && !gl.isBarHorizontal) {
           if (gl.minY === Number.MIN_VALUE && lowestYInAllSeries !== -Number.MAX_VALUE && lowestYInAllSeries !== gl.maxY // single value possibility
           ) {
-            gl.minY = lowestYInAllSeries;
+            var diff = gl.maxY - lowestYInAllSeries;
+
+            if (lowestYInAllSeries >= 0 && lowestYInAllSeries <= 10 || cnf.yaxis[0].min !== undefined || cnf.yaxis[0].max !== undefined) {
+              // if minY is already 0/low value, we don't want to go negatives here - so this check is essential.
+              diff = 0;
+            }
+
+            gl.minY = lowestYInAllSeries - diff * 5 / 100;
+            /* fix https://github.com/apexcharts/apexcharts.js/issues/614 */
+
+            /* fix https://github.com/apexcharts/apexcharts.js/issues/968 */
+
+            if (lowestYInAllSeries > 0 && gl.minY < 0) {
+              gl.minY = 0;
+            }
+            /* fix https://github.com/apexcharts/apexcharts.js/issues/426 */
+
+
+            gl.maxY = gl.maxY + diff * 5 / 100;
           }
-        } else {
-          gl.minY = minYMaxY.minY;
         }
 
         cnf.yaxis.forEach(function (yaxe, index) {
@@ -12023,18 +11547,16 @@
         if (gl.isMultipleYAxis) {
           this.scales.setMultipleYScales();
           gl.minY = lowestYInAllSeries;
+          gl.yAxisScale.forEach(function (scale, i) {
+            gl.minYArr[i] = scale.niceMin;
+            gl.maxYArr[i] = scale.niceMax;
+          });
         } else {
           this.scales.setYScaleForIndex(0, gl.minY, gl.maxY);
           gl.minY = gl.yAxisScale[0].niceMin;
           gl.maxY = gl.yAxisScale[0].niceMax;
           gl.minYArr[0] = gl.yAxisScale[0].niceMin;
           gl.maxYArr[0] = gl.yAxisScale[0].niceMax;
-          gl.seriesYAxisMap = [gl.series.map(function (x, i) {
-            return i;
-          })];
-          gl.seriesYAxisReverseMap = gl.series.map(function (x, i) {
-            return 0;
-          });
         }
 
         return {
@@ -12306,9 +11828,9 @@
             }
           });
         });
-        Object.entries(stackedPoss).forEach(function (_ref2) {
-          var _ref3 = _slicedToArray(_ref2, 1),
-              key = _ref3[0];
+        Object.entries(stackedPoss).forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+              key = _ref2[0];
 
           stackedPoss[key].forEach(function (_, stgi) {
             gl.maxY = Math.max(gl.maxY, stackedPoss[key][stgi]);
@@ -14077,22 +13599,15 @@
 
           if (xDivision > gridWidth / 2) {
             xDivision = xDivision / 2;
-          } // Here, barWidth is assumed to be the width occupied by a group of bars.
-          // There will be one bar in the group for each series plotted.
-          // Note: This version of the following math is different to that over in
-          // Helpers.js. Don't assume they should be the same. Over there,
-          // xDivision is computed differently and it's used on different charts.
-          // They were the same, but the solution to
-          // https://github.com/apexcharts/apexcharts.js/issues/4178
-          // was to remove the division by seriesLen.
+          }
 
-
-          barWidth = xDivision * parseInt(w.config.plotOptions.bar.columnWidth, 10) / 100;
+          barWidth = xDivision / seriesLen * parseInt(w.config.plotOptions.bar.columnWidth, 10) / 100;
 
           if (barWidth < 1) {
             barWidth = 1;
           }
 
+          barWidth = barWidth / (seriesLen > 1 ? 1 : 1.5) + 5;
           w.globals.barPadForNumericAxis = barWidth;
         }
 
@@ -14542,9 +14057,11 @@
         var series = Utils$1.clone(w.config.series);
 
         if (w.globals.axisCharts) {
-          var yaxis = w.config.yaxis[w.globals.seriesYAxisReverseMap[realIndex]];
+          var shouldNotHideYAxis = false;
 
-          if (yaxis && yaxis.show && yaxis.showAlways) {
+          if (w.config.yaxis[realIndex] && w.config.yaxis[realIndex].show && w.config.yaxis[realIndex].showAlways) {
+            shouldNotHideYAxis = true;
+
             if (w.globals.ancillaryCollapsedSeriesIndices.indexOf(realIndex) < 0) {
               w.globals.ancillaryCollapsedSeries.push({
                 index: realIndex,
@@ -14553,17 +14070,17 @@
               });
               w.globals.ancillaryCollapsedSeriesIndices.push(realIndex);
             }
-          } else {
-            if (w.globals.collapsedSeriesIndices.indexOf(realIndex) < 0) {
-              w.globals.collapsedSeries.push({
-                index: realIndex,
-                data: series[realIndex].data.slice(),
-                type: seriesEl.parentNode.className.baseVal.split('-')[1]
-              });
-              w.globals.collapsedSeriesIndices.push(realIndex);
-              var removeIndexOfRising = w.globals.risingSeries.indexOf(realIndex);
-              w.globals.risingSeries.splice(removeIndexOfRising, 1);
-            }
+          }
+
+          if (!shouldNotHideYAxis) {
+            w.globals.collapsedSeries.push({
+              index: realIndex,
+              data: series[realIndex].data.slice(),
+              type: seriesEl.parentNode.className.baseVal.split('-')[1]
+            });
+            w.globals.collapsedSeriesIndices.push(realIndex);
+            var removeIndexOfRising = w.globals.risingSeries.indexOf(realIndex);
+            w.globals.risingSeries.splice(removeIndexOfRising, 1);
           }
         } else {
           w.globals.collapsedSeries.push({
@@ -15384,6 +14901,13 @@
         };
         var yaxis = Utils$1.clone(w.globals.initialConfig.yaxis);
 
+        if (w.config.chart.zoom.autoScaleYaxis) {
+          var scale = new Range$1(this.ctx);
+          yaxis = scale.autoScaleY(this.ctx, yaxis, {
+            xaxis: xaxis
+          });
+        }
+
         if (!w.config.chart.group) {
           // if chart in a group, prevent yaxis update here
           // fix issue #650
@@ -15632,7 +15156,7 @@
         me.clientX = e.type === 'touchmove' || e.type === 'touchstart' ? e.touches[0].clientX : e.type === 'touchend' ? e.changedTouches[0].clientX : e.clientX;
         me.clientY = e.type === 'touchmove' || e.type === 'touchstart' ? e.touches[0].clientY : e.type === 'touchend' ? e.changedTouches[0].clientY : e.clientY;
 
-        if ((e.type === 'mousedown' || e.type === 'touchmove') && e.which === 1) {
+        if (e.type === 'mousedown' && e.which === 1) {
           var gridRectDim = me.gridRect.getBoundingClientRect();
           me.startX = me.clientX - gridRectDim.left;
           me.startY = me.clientY - gridRectDim.top;
@@ -15646,17 +15170,7 @@
           if (w.globals.panEnabled) {
             w.globals.selection = null;
 
-            if (me.w.globals.mousedown || e.type === 'touchmove') {
-              if (e.type === 'touchmove' && !me.w.globals.mousedown) {
-                console.warn('me.w.globals.mousedown ', me.w.globals.mousedown);
-
-                var _gridRectDim = me.gridRect.getBoundingClientRect();
-
-                me.startX = me.clientX - _gridRectDim.left;
-                me.startY = me.clientY - _gridRectDim.top;
-                me.w.globals.mousedown = true;
-              }
-
+            if (me.w.globals.mousedown) {
               me.panDragging({
                 context: me,
                 zoomtype: zoomtype,
@@ -15664,17 +15178,6 @@
               });
             }
           } else {
-            if (e.type === 'touchmove') {
-              if (!me.w.globals.mousedown) {
-                var _gridRectDim2 = me.gridRect.getBoundingClientRect();
-
-                me.startX = me.clientX - _gridRectDim2.left;
-                me.startY = me.clientY - _gridRectDim2.top;
-              }
-
-              me.w.globals.mousedown = true;
-            }
-
             if (me.w.globals.mousedown && w.globals.zoomEnabled || me.w.globals.mousedown && w.globals.selectionEnabled) {
               me.selection = me.selectionDrawing({
                 context: me,
@@ -15686,12 +15189,12 @@
 
         if (e.type === 'mouseup' || e.type === 'touchend' || e.type === 'mouseleave') {
           // we will be calling getBoundingClientRect on each mousedown/mousemove/mouseup
-          var _gridRectDim3 = me.gridRect.getBoundingClientRect();
+          var _gridRectDim = me.gridRect.getBoundingClientRect();
 
           if (me.w.globals.mousedown) {
             // user released the drag, now do all the calculations
-            me.endX = me.clientX - _gridRectDim3.left;
-            me.endY = me.clientY - _gridRectDim3.top;
+            me.endX = me.clientX - _gridRectDim.left;
+            me.endY = me.clientY - _gridRectDim.top;
             me.dragX = Math.abs(me.endX - me.startX);
             me.dragY = Math.abs(me.endY - me.startY);
 
@@ -16060,6 +15563,13 @@
               });
             }
 
+            if (w.config.chart.zoom.autoScaleYaxis) {
+              var scale = new Range$1(me.ctx);
+              yaxis = scale.autoScaleY(me.ctx, yaxis, {
+                xaxis: xaxis
+              });
+            }
+
             if (toolbar) {
               var beforeZoomRange = toolbar.getBeforeZoomRange(xaxis, yaxis);
 
@@ -16202,6 +15712,19 @@
             xHighestValue = maxX;
           }
         }
+
+        var xaxis = {
+          min: xLowestValue,
+          max: xHighestValue
+        };
+
+        if (w.config.chart.zoom.autoScaleYaxis) {
+          var scale = new Range$1(this.ctx);
+          yaxis = scale.autoScaleY(this.ctx, yaxis, {
+            xaxis: xaxis
+          });
+        }
+
         var options = {
           xaxis: {
             min: xLowestValue,
@@ -18066,10 +17589,17 @@
         var w = this.w;
         var ttCtx = this.ttCtx;
 
-        for (var i = 0; i < w.config.yaxis.length; i++) {
+        var _loop = function _loop(i) {
           var isRight = w.config.yaxis[i].opposite || w.config.yaxis[i].crosshairs.opposite;
           ttCtx.yaxisOffX = isRight ? w.globals.gridWidth + 1 : 1;
           var tooltipCssClass = isRight ? "apexcharts-yaxistooltip apexcharts-yaxistooltip-".concat(i, " apexcharts-yaxistooltip-right") : "apexcharts-yaxistooltip apexcharts-yaxistooltip-".concat(i, " apexcharts-yaxistooltip-left");
+          w.globals.yAxisSameScaleIndices.map(function (samescales, ssi) {
+            samescales.map(function (s, si) {
+              if (si === i) {
+                tooltipCssClass += w.config.yaxis[si].show ? " " : " apexcharts-yaxistooltip-hidden";
+              }
+            });
+          });
           var renderTo = w.globals.dom.elWrap;
           var yaxisTooltip = w.globals.dom.baseEl.querySelector(".apexcharts-yaxistooltip apexcharts-yaxistooltip-".concat(i));
 
@@ -18082,6 +17612,10 @@
             ttCtx.yaxisTooltipText[i].classList.add('apexcharts-yaxistooltip-text');
             ttCtx.yaxisTooltip.appendChild(ttCtx.yaxisTooltipText[i]);
           }
+        };
+
+        for (var i = 0; i < w.config.yaxis.length; i++) {
+          _loop(i);
         }
       }
       /**
@@ -20283,7 +19817,7 @@
           });
           elBarShadows.node.classList.add('apexcharts-element-hidden');
 
-          for (var j = 0; j < series[i].length; j++) {
+          for (var j = 0; j < w.globals.dataPoints; j++) {
             var strokeWidth = this.barHelpers.getStrokeWidth(i, j, realIndex);
             var paths = null;
             var pathsParams = {
@@ -22520,12 +22054,12 @@
       key: "drawPolarElements",
       value: function drawPolarElements(parent) {
         var w = this.w;
-        var scale = new Scales(this.ctx);
+        var scale = new Range$1(this.ctx);
         var graphics = new Graphics(this.ctx);
         var helpers = new CircularChartsHelpers(this.ctx);
         var gCircles = graphics.group();
         var gYAxis = graphics.group();
-        var yScale = scale.niceScale(0, Math.ceil(this.maxY), 0);
+        var yScale = scale.niceScale(0, Math.ceil(this.maxY), w.config.yaxis[0].tickAmount, 0, true);
         var yTexts = yScale.result.reverse();
         var len = yScale.result.length;
         this.maxY = yScale.niceMax;
@@ -27240,12 +26774,26 @@
           w.config.chart.events.selection = function (chart, e) {
             targets.forEach(function (target) {
               var targetChart = ApexCharts.getChartByID(target);
+              var yaxis = Utils$1.clone(w.config.yaxis);
+
+              if (w.config.chart.brush.autoScaleYaxis && targetChart.w.globals.series.length === 1) {
+                var scale = new Range$1(targetChart);
+                yaxis = scale.autoScaleY(targetChart, yaxis, e);
+              }
+
+              var multipleYaxis = targetChart.w.config.yaxis.reduce(function (acc, curr, index) {
+                return [].concat(_toConsumableArray(acc), [_objectSpread2(_objectSpread2({}, targetChart.w.config.yaxis[index]), {}, {
+                  min: yaxis[0].min,
+                  max: yaxis[0].max
+                })]);
+              }, []);
 
               targetChart.ctx.updateHelpers._updateOptions({
                 xaxis: {
                   min: e.xaxis.min,
                   max: e.xaxis.max
-                }
+                },
+                yaxis: multipleYaxis
               }, false, false, false, false);
             });
           };
@@ -29601,7 +29149,7 @@
       SVG.listeners[index][ev][ns][listener._svgjsListenerId] = l; // add listener
 
       node.addEventListener(ev, l, options || {
-        passive: false
+        passive: true
       });
     }; // Add event unbinder in the SVG namespace
 
