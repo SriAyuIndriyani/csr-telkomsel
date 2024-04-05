@@ -1,4 +1,4 @@
-@include('layouts.user.head-main')
+@include('layouts.viewer.head-main')
 
 <head>
 
@@ -17,12 +17,12 @@
         }
     </style>
 
-    @include('layouts.user.title-meta')
-    @include('layouts.user.head-css')
+    @include('layouts.viewer.title-meta')
+    @include('layouts.viewer.head-css')
 
 </head>
 
-@include('layouts.user.body')
+@include('layouts.viewer.body')
 @include('sweetalert::alert')
 
 <!-- <body data-layout="horizontal"> -->
@@ -30,7 +30,7 @@
 <!-- Begin page -->
 <div id="layout-wrapper">
 
-    @include('layouts.user.menu')
+    @include('layouts.viewer.menu')
 
     <!-- ============================================================== -->
     <!-- Start right Content here -->
@@ -65,22 +65,8 @@
                                             <div class="flex-grow-1">
                                                 <div>
                                                     <h5 class="font-size-16 mb-1">{{ Auth::user()->name }}</h5>
-                                                    <p class="text-muted font-size-13">Partisipan</p>
-                                                    <div
-                                                        class="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
-                                                        <!-- Form untuk copy link -->
-                                                        <div>
-                                                            <input type="hidden"
-                                                                value="http://127.0.0.1:8000/pengajuan-jadwal/{{ encrypt($user->id) }}"
-                                                                readonly>
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-success waves-effect btn-label waves-light"
-                                                                onclick="copyLink(this)"><i
-                                                                    class="bx bx-copy label-icon"></i> Salin
-                                                                Link</button>
-                                                        </div>
-                                                        <!-- End Form untuk copy link -->
-                                                    </div>
+                                                    <p class="text-muted font-size-13">Admin</p>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -117,10 +103,8 @@
                                         <div>
                                             <label class="form-label">Nama Lengkap:</label>
                                             <p>{{ Auth::user()->name }}</p>
-                                            <label class="form-label">Nomor Handphone Aktif:</label>
-                                            <p>{{ Auth::user()->phone }}</p>
-                                            <label class="form-label">Alamat Email Aktif:</label>
-                                            <p>{{ Auth::user()->email }}</p>
+                                            <label class="form-label">Username:</label>
+                                            <p>{{ Auth::user()->username }}</p>
                                         </div>
                                     </div>
                                     <!-- end card body -->
@@ -136,7 +120,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div>
-                                            <form action="/user/profile/updateProfile" method="POST">
+                                            <form action="/viewer/profile/updateProfile" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="mb-3">
@@ -145,14 +129,9 @@
                                                         value="{{ Auth::user()->name }}" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label">Nomor Handphone Aktif</label>
-                                                    <input class="form-control" name="phone" type="number"
-                                                        value="{{ Auth::user()->phone }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Alamat Email Aktif</label>
-                                                    <input class="form-control" name="email" type="email"
-                                                        value="{{ Auth::user()->email }}" required>
+                                                    <label class="form-label">Username</label>
+                                                    <input class="form-control" name="username" type="text"
+                                                        value="{{ Auth::user()->username }}" required>
                                                 </div>
                                                 <div class="mt-4">
                                                     <button type="submit"
@@ -175,7 +154,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div>
-                                            <form action="/user/profile/updatePassword" method="POST"
+                                            <form action="/viewer/profile/updatePassword" method="POST"
                                                 onsubmit="return validatePassword()">
                                                 @csrf
                                                 @method('PUT')
@@ -236,7 +215,7 @@
         <!-- End Page-content -->
 
 
-        @include('layouts.user.footer')
+        @include('layouts.viewer.footer')
     </div>
     <!-- end main content-->
 
@@ -244,7 +223,7 @@
 <!-- END layout-wrapper -->
 
 <!-- JAVASCRIPT -->
-@include('layouts.user.vendor-scripts')
+@include('layouts.viewer.vendor-scripts')
 
 <script src="/assets/js/pages/pass-addon.init.js"></script>
 
@@ -289,7 +268,6 @@
             icon: 'success'
         });
     }
-    
 </script>
 
 </body>

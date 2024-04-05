@@ -1,3 +1,3 @@
-@include('layouts.user.topbar')
+@include('layouts.viewer.topbar')
 
-@include('layouts.user.sidebar')
+@include('layouts.viewer.sidebar')

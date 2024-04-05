@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\CSRControllers;
 use App\Http\Controllers\Admin\ProfileControllers;
 use App\Http\Controllers\Admin\UserAdminControllers;
 use App\Http\Controllers\LoginControllers;
+use App\Http\Controllers\Viewer\CSRViewerControllers;
+use App\Http\Controllers\Viewer\ProfileViwerControllers;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -24,7 +26,7 @@ Route::middleware('auth:web')->group(function () {
     */
    Route::middleware('check.user:1')->group(function () {
       Route::group(['prefix' => 'admin'], function () {
-         // Dashboard
+         // Profile
          Route::get('/profile', [ProfileControllers::class, 'index']);
          Route::put('/profile/updateProfile', [ProfileControllers::class, 'storeProfile']);
          Route::put('/profile/updatePassword', [ProfileControllers::class, 'storePassword']);
@@ -49,11 +51,12 @@ Route::middleware('auth:web')->group(function () {
     */
    Route::middleware('check.user:2')->group(function () {
       Route::group(['prefix' => 'viewer'], function () {
-         // Dashboard
-         Route::get('/dashboard', function () {
-            return "Halaman Viewer";
-         });
-         // Route::get('/dashboard', [DashboardUserControllers::class, 'index']);
+         // Profile
+         Route::get('/profile', [ProfileViwerControllers::class, 'index']);
+         Route::put('/profile/updateProfile', [ProfileViwerControllers::class, 'storeProfile']);
+         Route::put('/profile/updatePassword', [ProfileViwerControllers::class, 'storePassword']);
+         // Kelola Data
+         Route::get('/cek-data', [CSRViewerControllers::class, 'index']);
       });
    });
 });

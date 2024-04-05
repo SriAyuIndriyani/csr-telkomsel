@@ -23,16 +23,8 @@
                         <img src="/images/logo.png" alt="" height="24">
                     </span>
                     <span class="logo-lg">
-                        <img src="/images/logo.png" alt="" height="24"> <span class="logo-txt">Smart Agenda</span>
-                    </span>
-                </a>
-
-                <a href="/" class="logo logo-light">
-                    <span class="logo-sm">
-                        <img src="/images/logo.png" alt="" height="24">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="/images/logo.png" alt="" height="24"> <span class="logo-txt">Smart Agenda</span>
+                        <img src="/images/logo.png" alt="" height="24"> <span
+                            class="logo-txt text-danger">CSR Telkomsel</span>
                     </span>
                 </a>
             </div>
@@ -60,9 +52,6 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="/user/profile"><i
-                            class="fas fa-user font-size-16 align-middle me-1"></i> Profil</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="/log-out"><i
                             class="mdi mdi-logout font-size-16 align-middle me-1 text-danger"></i> Keluar</a>
                 </div>

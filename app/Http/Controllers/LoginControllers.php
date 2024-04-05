@@ -50,7 +50,7 @@ class LoginControllers extends Controller
                         'name' => $userWithRole->name,
                     ]
                 ]);
-                return redirect('/user/dashboard')->with('showSuccessModal', true);
+                return redirect('/viewer/profile');
             }
             // Selain Di Atas
             else {

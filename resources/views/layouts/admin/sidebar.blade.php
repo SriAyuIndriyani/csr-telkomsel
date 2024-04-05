@@ -10,7 +10,7 @@
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
-                    <a href="/admin/dashboard">
+                    <a href="/admin/profile">
                         <i class="fas fa-user"></i>
                         <span data-key="t-dashboard">Profile</span>
                     </a>
