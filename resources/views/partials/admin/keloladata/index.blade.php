@@ -49,6 +49,12 @@
                                 <th scope="col">Lokasi</th>
                                 <th scope="col">Jabatan</th>
                                 <th scope="col">Type</th>
+                                <th scope="col">Hostname</th>
+                                <th scope="col">SSD</th>
+                                <th scope="col">Windows Version</th>
+                                <th scope="col">Processor</th>
+                                <th scope="col">Antivirus</th>
+                                <th scope="col">RAM</th>
                                 <th style="width: 80px; min-width: 80px;">Aksi</th>
                             </tr>
                         </thead>
@@ -63,6 +69,12 @@
                                     <td>{{ $item->lokasi }}</td>
                                     <td>{{ $item->jabatan }}</td>
                                     <td>{{ $item->type }}</td>
+                                    <td>{{ $item->hostname }}</td>
+                                    <td>{{ $item->ssd }}</td>
+                                    <td>{{ $item->winver }}</td>
+                                    <td>{{ $item->processor }}</td>
+                                    <td>{{ $item->antivirus }}</td>
+                                    <td>{{ $item->ram }}</td>
                                     <td>
                                         <div class="dropdown">
                                             <button

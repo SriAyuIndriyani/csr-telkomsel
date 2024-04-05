@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CSRControllers;
-use App\Http\Controllers\Admin\DashboardAdminControllers;
+use App\Http\Controllers\Admin\ProfileControllers;
 use App\Http\Controllers\Admin\UserAdminControllers;
 use App\Http\Controllers\LoginControllers;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +25,9 @@ Route::middleware('auth:web')->group(function () {
    Route::middleware('check.user:1')->group(function () {
       Route::group(['prefix' => 'admin'], function () {
          // Dashboard
-         Route::get('/dashboard', [DashboardAdminControllers::class, 'index']);
+         Route::get('/profile', [ProfileControllers::class, 'index']);
+         Route::put('/profile/updateProfile', [ProfileControllers::class, 'storeProfile']);
+         Route::put('/profile/updatePassword', [ProfileControllers::class, 'storePassword']);
          // Semua Pengguna
          Route::get('/all-user', [UserAdminControllers::class, 'index']);
          Route::get('/all-user/create', [UserAdminControllers::class, 'create']);
@@ -37,7 +39,9 @@ Route::middleware('auth:web')->group(function () {
          Route::get('/kelola-data', [CSRControllers::class, 'index']);
          Route::get('/kelola-data/create', [CSRControllers::class, 'create']);
          Route::post('/kelola-data/createData', [CSRControllers::class, 'createData']);
-
+         Route::get('/kelola-data/update/{id}', [CSRControllers::class, 'update']);
+         Route::post('/kelola-data/updateData/{id}', [CSRControllers::class, 'updateData']);
+         Route::delete('/kelola-data/delete/{id}', [CSRControllers::class, 'delete']);
       });
    });
    /**

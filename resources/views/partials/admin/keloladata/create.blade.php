@@ -25,7 +25,7 @@
                             <h4 class="page-title mb-0 font-size-18">Tambah Data Laptop</h4>
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="/admin/all-user">Kelola Data Laptop</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/kelola-data">Kelola Data Laptop</a></li>
                                     <li class="breadcrumb-item active">Tambah Data Laptop</a></li>
                                 </ol>
                             </div>
@@ -87,6 +87,7 @@
                                     <div class="col-md-4">
                                         <label for="ramSelect" class="form-label">RAM</label>
                                         <select class="form-select" id="ramSelect" name="ram">
+                                            <option disabled selected>Silahkan pilih RAM</option>
                                             <option value="4 GB">4 GB</option>
                                             <option value="8 GB">8 GB</option>
                                             <option value="16 GB">16 GB</option>

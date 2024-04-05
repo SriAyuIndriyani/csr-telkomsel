@@ -22,45 +22,96 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="page-title mb-0 font-size-18">Ubah Pengguna</h4>
+                            <h4 class="page-title mb-0 font-size-18">Ubah Data Laptop</h4>
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="/admin/all-user">Semua Pengguna</a></li>
-                                    <li class="breadcrumb-item active">Ubah Pengguna</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/kelola-data">Kelola Data Laptop</a></li>
+                                    <li class="breadcrumb-item active">Ubah Data Laptop</a></li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- end page title -->
+
                 <div class="card">
                     <div class="card-body mt-2">
-                        <form class="row g-3" action="/admin/all-user/updateData/{{ $user->id }}" method="POST">
+                        <form class="row g-3" action="/admin/kelola-data/updateData/{{ $data->id }}" method="POST">
                             @csrf
-                            <div class="col-12">
-                                <label for="inputNanme4" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="inputNanme4" name="name"
-                                    value="{{ $user->name }}">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputEmail4" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="inputEmail4" name="username"
-                                    value="{{ $user->username }}">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputPassword4" class="form-label">Kata Sandi</label>
-                                <div class="input-group auth-pass-inputgroup">
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        aria-label="Password" aria-describedby="password-addon"
-                                        placeholder="Silahkan Masukkan Password Baru Jika Ingin Mengganti Pasword !.">
-                                    <button class="btn btn-light ms-0" type="button" id="password-addon"><i
-                                            class="mdi mdi-eye-outline"></i></button>
+                            <label for="" class="form-label">Data Diri</label>
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="inputNanme4" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="inputNanme4" name="nama"
+                                            value="{{ $data->nama }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputEmail4" class="form-label">Lokasi</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="lokasi"
+                                            value="{{ $data->lokasi }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputEmail4" class="form-label">Jabatan</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="jabatan"
+                                            value="{{ $data->jabatan }}">
+                                    </div>
                                 </div>
                             </div>
+                            <label for="" class="form-label">Data Laptop</label>
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="inputNanme4" class="form-label">Type</label>
+                                        <input type="text" class="form-control" id="inputNanme4" name="type"
+                                            value="{{ $data->type }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="inputEmail4" class="form-label">Hostname</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="hostname"
+                                            value="{{ $data->hostname }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="inputEmail4" class="form-label">SSD</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="ssd"
+                                            value="{{ $data->ssd }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="inputEmail4" class="form-label">Winver</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="winver"
+                                            value="{{ $data->winver }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="inputNanme4" class="form-label">Processor</label>
+                                        <input type="text" class="form-control" id="inputNanme4" name="processor"
+                                            value="{{ $data->processor }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="inputEmail4" class="form-label">Antivirus</label>
+                                        <input type="text" class="form-control" id="inputEmail4" name="antivirus"
+                                            value="{{ $data->antivirus }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="ramSelect" class="form-label">RAM</label>
+                                        <select class="form-select" id="ramSelect" name="ram">
+                                            <option disabled>Silahkan pilih RAM</option>
+                                            <option value="4 GB" {{ $data->ram == '4 GB' ? 'selected' : '' }}>4 GB
+                                            </option>
+                                            <option value="8 GB" {{ $data->ram == '8 GB' ? 'selected' : '' }}>8 GB
+                                            </option>
+                                            <option value="16 GB" {{ $data->ram == '16 GB' ? 'selected' : '' }}>16 GB
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="text-end">
                                 <button type="submit"
                                     class="btn btn-primary btn-sm waves-effect btn-label waves-light"><i
-                                        class="bx bx-check label-icon"></i> Perbarui</button>
+                                        class="bx bx-check label-icon"></i>Perbarui Data Laptop</button>
                                 <button type="reset" class="btn btn-secondary btn-sm">Reset</button>
                             </div>
                         </form><!-- Vertical Form -->

@@ -11,8 +11,8 @@
 
                 <li>
                     <a href="/admin/dashboard">
-                        <i class="mdi mdi-home-variant-outline"></i>
-                        <span data-key="t-dashboard">Dashboard</span>
+                        <i class="fas fa-user"></i>
+                        <span data-key="t-dashboard">Profile</span>
                     </a>
                 </li>
 
