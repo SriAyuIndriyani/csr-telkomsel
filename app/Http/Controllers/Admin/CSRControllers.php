@@ -74,5 +74,6 @@ class CSRControllers extends Controller
     {
         CSRModels::where('id', $id)->delete();
         Alert::success('Berhasil!', 'Data Laptop Berhasil Dihapus.');
+        return redirect('/admin/kelola-data');
     }
 }
