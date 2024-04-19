@@ -4,15 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <link rel="icon" href="{{asset('/images/ikon.png')}}" type="image/x-icon">
-    <title>Login - csr grapari</title>
+    <title>Login - CSR Telkomsel</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="/images/logo-gci-oke.png" rel="icon">
-    <link href="/images/logo-gci-oke.png" rel="apple-touch-icon">
+    <link href="/images/logo.png" rel="icon">
+    <link href="/images/logo.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -34,7 +32,7 @@
 </head>
 
 <body style="font-family: nunito">
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
 
     <main>
         <div class="container">
@@ -44,8 +42,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
                             <div class="d-flex flex-column align-items-center mb-2">
-                                <img src="/images/telkomsel.png" alt=""
-                                    class="w-50 justify-content-center">
+                                <img src="/images/telkomsel.png" alt="" class="w-50 justify-content-center">
                             </div>
                             <!-- End Logo -->
                             <div class="card mb-3 bg-danger">
@@ -68,6 +65,7 @@
                                                 <input type="text" name="username" class="form-control" id="yourEmail"
                                                     required>
                                                 <div class="invalid-feedback text-dark">Silahkan masukkan username</div>
+
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -89,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="credits">
-                                Designed by <a href="">Saiy</a>
+                                Designed by <a href="">Telkomsel Indonesia</a>
                             </div>
 
                         </div>
