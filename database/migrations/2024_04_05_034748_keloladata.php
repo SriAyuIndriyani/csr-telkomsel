@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('keloladata', function (Blueprint $table) {
             $table->id();
             $table->integer('id_admin');
+            $table->string('id_location_csr');
             $table->string('nama');
-            $table->string('lokasi');
             $table->string('jabatan');
             $table->string('type');
             $table->string('hostname');
@@ -32,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('keloladata');
     }
 };

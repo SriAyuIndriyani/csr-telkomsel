@@ -8,6 +8,6 @@
 <!-- App Css-->
 <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
-<link href='/lib/main.css' rel='stylesheet' />
-<script src='/lib/main.js'></script>
+{{-- <link href='/lib/main.css' rel='stylesheet' />
+<script src='/lib/main.js'></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

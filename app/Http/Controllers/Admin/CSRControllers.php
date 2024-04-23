@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CSRModels;
+use App\Models\LocationCsrModels;
 use App\Models\UsersModels;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -13,7 +14,9 @@ class CSRControllers extends Controller
 {
     function index()
     {
-        $data = CSRModels::get();
+        $data = CSRModels::select('keloladata.*', 'location_csr.lokasi')
+            ->join('location_csr', 'location_csr.id', '=', 'keloladata.id_location_csr')
+            ->get();
         $title = 'Hapus Data PC/Laptop!';
         $text = "Apakah anda yakin ingin menghapus data PC atau Laptop ini?";
         confirmDelete($title, $text);
@@ -22,7 +25,8 @@ class CSRControllers extends Controller
 
     function create()
     {
-        return view('partials.admin.keloladata.create');
+        $location = LocationCsrModels::get();
+        return view('partials.admin.keloladata.create', compact('location'));
     }
 
     function createData(Request $request)
@@ -31,7 +35,7 @@ class CSRControllers extends Controller
         CSRModels::create([
             'id_admin' => $id,
             'nama' => $request->input('nama'),
-            'lokasi' => $request->input('lokasi'),
+            'id_location_csr' => $request->input('lokasi'),
             'jabatan' => $request->input('jabatan'),
             'type' => $request->input('type'),
             'hostname' => $request->input('hostname'),
@@ -41,7 +45,6 @@ class CSRControllers extends Controller
             'antivirus' => $request->input('antivirus'),
             'ram' => $request->input('ram'),
         ]);
-
         Alert::success('Berhasil', 'Data Laptop Berhasil Ditambahkan.');
         return redirect('/admin/kelola-data');
     }
@@ -49,14 +52,15 @@ class CSRControllers extends Controller
     function update($id)
     {
         $data = CSRModels::find($id);
-        return view('partials.admin.keloladata.update', compact('data'));
+        $location = LocationCsrModels::get();
+        return view('partials.admin.keloladata.update', compact('data', 'location'));
     }
 
     function updateData(Request $request, $id)
     {
         CSRModels::where('id', $id)->update([
             'nama' => $request->input('nama'),
-            'lokasi' => $request->input('lokasi'),
+            'id_location_csr' => $request->input('lokasi'),
             'jabatan' => $request->input('jabatan'),
             'type' => $request->input('type'),
             'hostname' => $request->input('hostname'),

@@ -47,10 +47,17 @@
                                             value="{{ $data->nama }}">
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="inputEmail4" class="form-label">Lokasi</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="lokasi"
-                                            value="{{ $data->lokasi }}">
+                                        <label for="lokasi" class="form-label">Lokasi</label>
+                                        <select class="form-select" id="lokasi" name="lokasi" required>
+                                            <option value="" disabled>Pilih Lokasi</option>
+                                            @foreach ($location as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ $data->id_location_csr == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->lokasi }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+
                                     <div class="col-md-4">
                                         <label for="inputEmail4" class="form-label">Jabatan</label>
                                         <input type="text" class="form-control" id="inputEmail4" name="jabatan"

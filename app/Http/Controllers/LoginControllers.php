@@ -39,7 +39,7 @@ class LoginControllers extends Controller
                         'username' => $userWithRole->username,
                     ]
                 ]);
-                return redirect('/admin/profile')->with('showSuccessModal', true);
+                return redirect('/admin/dashboard');
             }
             // Pengguna
             elseif (strcasecmp($role, 'Viewer') === 0 || strcasecmp($role, 'viewer') === 0) {

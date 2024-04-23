@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\CSRControllers;
+use App\Http\Controllers\Admin\DashboardAdminControllers;
+use App\Http\Controllers\Admin\LocationCSR;
 use App\Http\Controllers\Admin\ProfileControllers;
 use App\Http\Controllers\Admin\UserAdminControllers;
 use App\Http\Controllers\LoginControllers;
@@ -26,6 +28,9 @@ Route::middleware('auth:web')->group(function () {
     */
    Route::middleware('check.user:1')->group(function () {
       Route::group(['prefix' => 'admin'], function () {
+         // Dashoard
+         Route::get('/dashboard', [DashboardAdminControllers::class, 'index']);
+         Route::get('/dashboard/data', [DashboardAdminControllers::class, 'data']);
          // Profile
          Route::get('/profile', [ProfileControllers::class, 'index']);
          Route::put('/profile/updateProfile', [ProfileControllers::class, 'storeProfile']);
@@ -37,6 +42,10 @@ Route::middleware('auth:web')->group(function () {
          Route::get('/all-user/update/{id}', [UserAdminControllers::class, 'update']);
          Route::post('/all-user/updateData/{id}', [UserAdminControllers::class, 'updateData']);
          Route::delete('/all-user/delete/{id}', [UserAdminControllers::class, 'delete']);
+         // Location CSR
+         Route::get('/location-csr', [LocationCSR::class, 'index']);
+         Route::get('/location-csr/create', [LocationCSR::class, 'create']);
+         Route::post('/location-csr/createData', [LocationCSR::class, 'createData']);
          // Kelola Data
          Route::get('/kelola-data', [CSRControllers::class, 'index']);
          Route::get('/kelola-data/create', [CSRControllers::class, 'create']);

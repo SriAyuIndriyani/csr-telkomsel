@@ -43,15 +43,23 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="inputNanme4" class="form-label">Nama</label>
-                                        <input type="text" class="form-control" id="inputNanme4" name="nama">
+                                        <input type="text" class="form-control" id="inputNanme4" name="nama"
+                                            required>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="inputEmail4" class="form-label">Lokasi</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="lokasi">
+                                        <label for="lokasi" class="form-label">Lokasi</label>
+                                        <select class="form-select" id="lokasi" name="lokasi" required>
+                                            <option value="" disabled selected>Pilih Lokasi</option>
+                                            @foreach ($location as $item)
+                                                <option value="{{ $item->id }}">{{ $item->lokasi }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+
                                     <div class="col-md-4">
                                         <label for="inputEmail4" class="form-label">Jabatan</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="jabatan">
+                                        <input type="text" class="form-control" id="inputEmail4" name="jabatan"
+                                            required>
                                     </div>
                                 </div>
                             </div>
@@ -60,33 +68,39 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label for="inputNanme4" class="form-label">Type</label>
-                                        <input type="text" class="form-control" id="inputNanme4" name="type">
+                                        <input type="text" class="form-control" id="inputNanme4" name="type"
+                                            required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="inputEmail4" class="form-label">Hostname</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="hostname">
+                                        <input type="text" class="form-control" id="inputEmail4" name="hostname"
+                                            required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="inputEmail4" class="form-label">SSD</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="ssd">
+                                        <input type="text" class="form-control" id="inputEmail4" name="ssd"
+                                            required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="inputEmail4" class="form-label">Windows Version</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="winver">
+                                        <input type="text" class="form-control" id="inputEmail4" name="winver"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="inputNanme4" class="form-label">Processor</label>
-                                        <input type="text" class="form-control" id="inputNanme4" name="processor">
+                                        <input type="text" class="form-control" id="inputNanme4" name="processor"
+                                            required>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="inputEmail4" class="form-label">Antivirus</label>
-                                        <input type="text" class="form-control" id="inputEmail4" name="antivirus">
+                                        <input type="text" class="form-control" id="inputEmail4" name="antivirus"
+                                            required>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="ramSelect" class="form-label">RAM</label>
-                                        <select class="form-select" id="ramSelect" name="ram">
+                                        <select class="form-select" id="ramSelect" name="ram" required>
                                             <option disabled selected>Silahkan pilih RAM</option>
                                             <option value="4 GB">4 GB</option>
                                             <option value="8 GB">8 GB</option>

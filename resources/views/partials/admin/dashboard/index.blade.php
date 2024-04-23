@@ -1,31 +1,46 @@
 @include('layouts.admin.head-main')
 
 <head>
-    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     @include('layouts.admin.title-meta')
     @include('layouts.admin.head-css')
 </head>
 @include('layouts.admin.body')
+@include('sweetalert::alert')
 <!-- Begin page -->
 <div id="layout-wrapper">
     @include('layouts.admin.menu')
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
-                {{-- HEADER CONTENT --}}
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <h5 class="card-title">Dashboard</span>
-                            </h5>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <h4 class="page-title mb-0 font-size-18">Dashboard</h4>
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item">Dashboard</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- end row -->
-                {{-- CONTENT --}}
-                <div class="row">
-                    <h1>Ini Halaman Dasboard</h1>
-                </div>
+                <!-- end page title -->
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-container" style="position: relative; height:400px; width:100%">
+                                <canvas id="pie"></canvas>
+                                <div id="pie-chart-legend" class="pie-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+
+                <!-- end table responsive -->
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
@@ -36,6 +51,72 @@
 <!-- END layout-wrapper -->
 <!-- JAVASCRIPT -->
 @include('layouts.admin.vendor-scripts')
+<!-- Chart JS -->
+<script src="/assets/libs/chart.js/Chart.bundle.min.js"></script>
+<!-- chartjs init -->
+<script src="/assets/js/pages/chartjs.init.js"></script>
+<script src="/assets/js/app.js"></script>
+
+<script>
+    $(document).ready(function() {
+        "use strict";
+
+        // Lakukan permintaan ke URL
+        $.ajax({
+            url: '/admin/dashboard/data',
+            method: 'GET',
+            success: function(response) {
+                // Ambil data yang diterima dari respons
+                var labels = response.labels;
+                var data = response.datasets[0].data;
+                var backgroundColors = response.datasets[0].backgroundColor;
+
+                // Buat pie chart dengan data yang diterima
+                var ctx = document.getElementById('pie').getContext('2d');
+                var pieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderColor: '#000000'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        legend: {
+                            display: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                color: '#000000',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                formatter: function(value, context) {
+                                    return context.chart.data.labels[context.dataIndex];
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Menampilkan legenda di atas chart
+                var legend = document.getElementById('pie-chart-legend');
+                legend.innerHTML = pieChart.generateLegend();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+</script>
 
 </body>
 

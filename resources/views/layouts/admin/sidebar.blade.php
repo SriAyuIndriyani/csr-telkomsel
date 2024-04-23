@@ -10,9 +10,9 @@
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
-                    <a href="/admin/profile">
-                        <i class="fas fa-user"></i>
-                        <span data-key="t-dashboard">Profile</span>
+                    <a href="/admin/dashboard">
+                        <i class="fas fa-home"></i>
+                        <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
 
@@ -20,6 +20,13 @@
                     <a href="/admin/all-user">
                         <i class="dripicons-user-group"></i>
                         <span data-key="t-authentication">Semua Pengguna</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/location-csr">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span data-key="t-authentication">Lokasi CSR</span>
                     </a>
                 </li>
 
