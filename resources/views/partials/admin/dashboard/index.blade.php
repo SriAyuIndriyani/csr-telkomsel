@@ -1,4 +1,5 @@
-@include('layouts.admin.head-main')
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     @include('layouts.admin.title-meta')
@@ -53,6 +54,8 @@
 @include('layouts.admin.vendor-scripts')
 <!-- Chart JS -->
 <script src="/assets/libs/chart.js/Chart.bundle.min.js"></script>
+<!-- Chart 3D Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d"></script>
 <!-- chartjs init -->
 <script src="/assets/js/pages/chartjs.init.js"></script>
 <script src="/assets/js/app.js"></script>
@@ -86,9 +89,6 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        legend: {
-                            display: false
-                        },
                         plugins: {
                             legend: {
                                 display: false
@@ -102,6 +102,13 @@
                                 formatter: function(value, context) {
                                     return context.chart.data.labels[context.dataIndex];
                                 }
+                            }
+                        },
+                        plugins: {
+                            chartjs3d: {
+                                enabled: true,
+                                alphaAngle: 60,
+                                betaAngle: 30
                             }
                         }
                     }
