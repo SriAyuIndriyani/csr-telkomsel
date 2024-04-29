@@ -16,16 +16,16 @@ class DashboardAdminControllers extends Controller
 
     function data()
     {
-        $data = CSRModels::select('location_csr.lokasi', DB::raw('COUNT(keloladata.id_location_csr) as jumlah'))
+        $data = CSRModels::select('location_csr.lokasi', 'location_csr.warna', DB::raw('COUNT(keloladata.id_location_csr) as jumlah'))
             ->join('location_csr', 'location_csr.id', '=', 'keloladata.id_location_csr')
-            ->groupBy('location_csr.lokasi')
+            ->groupBy('location_csr.lokasi', 'location_csr.warna')
             ->get();
 
         $labels = $data->pluck('lokasi');
         $datasets = $data->pluck('jumlah');
 
         // Definisikan array warna yang akan digunakan
-        $colors = ['#2ab57d', '#ebeff2', '#4a81d4', '#ff5733', '#ffa500', '#800080', '#008080', '#00ff00', '#0000ff', '#ff00ff'];
+        $colors = $data->pluck('warna');
 
         $result = [
             'labels' => $labels,

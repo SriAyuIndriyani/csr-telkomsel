@@ -46,6 +46,9 @@ Route::middleware('auth:web')->group(function () {
          Route::get('/location-csr', [LocationCSR::class, 'index']);
          Route::get('/location-csr/create', [LocationCSR::class, 'create']);
          Route::post('/location-csr/createData', [LocationCSR::class, 'createData']);
+         Route::get('/location-csr/update/{id}', [LocationCSR::class, 'update']);
+         Route::post('/location-csr/updateData/{id}', [LocationCSR::class, 'updateData']);
+         Route::get('/location-csr/delete/{id}', [LocationCSR::class, 'delete']);
          // Kelola Data
          Route::get('/kelola-data', [CSRControllers::class, 'index']);
          Route::get('/kelola-data/create', [CSRControllers::class, 'create']);

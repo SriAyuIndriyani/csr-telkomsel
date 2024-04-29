@@ -46,6 +46,7 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Lokasi</th>
+                                <th scope="col">Warna</th>
                                 <th style="width: 80px; min-width: 80px;">Aksi</th>
                             </tr>
                         </thead>
@@ -57,6 +58,8 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->lokasi }}</td>
+                                    <td><span style="color: {{ $item->warna }}">{{ $item->warna }}</span></td>
+
                                     <td>
                                         <div class="dropdown">
                                             <button
@@ -67,14 +70,14 @@
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
                                                     <a class="dropdown-item text-warning"
-                                                        href="/admin/all-user/update/{{ $item->id }}"><i
+                                                        href="/admin/location-csr/update/{{ $item->id }}"><i
                                                             class="mdi mdi-pencil-outline font-size-16 align-middle me-1"></i>
                                                         Ubah Data
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item text-danger"
-                                                        href="/admin/all-user/delete/{{ $item->id }}"
+                                                        href="/admin/location-csr/delete/{{ $item->id }}"
                                                         data-confirm-delete="true"><i
                                                             class="mdi mdi-trash-can-outline font-size-16 align-middle me-1 text-danger"></i>
                                                         Hapus Data</a>

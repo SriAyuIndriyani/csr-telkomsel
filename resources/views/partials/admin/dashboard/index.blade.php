@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <div class="chart-container" style="position: relative; height:400px; width:100%">
                                 <canvas id="pie"></canvas>
-                                <div id="pie-chart-legend" class="pie-chart-legend"></div>
+                                {{-- <div id="pie-chart-legend" class="pie-chart-legend"></div> --}}
                             </div>
                         </div>
                     </div>

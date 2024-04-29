@@ -43,6 +43,11 @@
                                 <input type="text" class="form-control" id="inputNanme4" name="lokasi"
                                     placeholder="Masukkan nama lokasi costumer service relationship">
                             </div>
+                            <div class="col-12">
+                                <label for="warna" class="form-label">Warna</label>
+                                <input type="color" class="form-control" id="warna" name="warna"
+                                    placeholder="Masukkan nama lokasi costumer service relationship">
+                            </div>
                             <div class="text-end">
                                 <button type="submit"
                                     class="btn btn-primary btn-sm waves-effect btn-label waves-light"><i

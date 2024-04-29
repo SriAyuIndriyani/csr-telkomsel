@@ -35,27 +35,18 @@
                 <!-- end page title -->
                 <div class="card">
                     <div class="card-body mt-2">
-                        <form class="row g-3" action="/admin/all-user/updateData/{{ $user->id }}" method="POST">
+                        <form class="row g-3" action="/admin/location-csr/updateData/{{ $location_csr->id }}"
+                            method="POST">
                             @csrf
                             <div class="col-12">
-                                <label for="inputNanme4" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="inputNanme4" name="name"
-                                    value="{{ $user->name }}">
+                                <label for="inputNanme4" class="form-label">Lokasi</label>
+                                <input type="text" class="form-control" id="inputNanme4" name="lokasi"
+                                    value="{{ $location_csr->lokasi }}">
                             </div>
                             <div class="col-12">
-                                <label for="inputEmail4" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="inputEmail4" name="username"
-                                    value="{{ $user->username }}">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputPassword4" class="form-label">Kata Sandi</label>
-                                <div class="input-group auth-pass-inputgroup">
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        aria-label="Password" aria-describedby="password-addon"
-                                        placeholder="Silahkan Masukkan Password Baru Jika Ingin Mengganti Pasword !.">
-                                    <button class="btn btn-light ms-0" type="button" id="password-addon"><i
-                                            class="mdi mdi-eye-outline"></i></button>
-                                </div>
+                                <label for="inputEmail4" class="form-label">Warna</label>
+                                <input type="color" class="form-control" id="inputEmail4" name="warna"
+                                    value="{{ $location_csr->warna }}">
                             </div>
                             <div class="text-end">
                                 <button type="submit"
