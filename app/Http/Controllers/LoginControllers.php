@@ -50,7 +50,7 @@ class LoginControllers extends Controller
                         'name' => $userWithRole->name,
                     ]
                 ]);
-                return redirect('/viewer/profile');
+                return redirect('/viewer/dashboard');
             }
             // Selain Di Atas
             else {
