@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProfileControllers;
 use App\Http\Controllers\Admin\UserAdminControllers;
 use App\Http\Controllers\LoginControllers;
 use App\Http\Controllers\Viewer\CSRViewerControllers;
+use App\Http\Controllers\Viewer\DashboardViewersControllers;
 use App\Http\Controllers\Viewer\ProfileViwerControllers;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,9 @@ Route::middleware('auth:web')->group(function () {
     */
    Route::middleware('check.user:2')->group(function () {
       Route::group(['prefix' => 'viewer'], function () {
+         // Dashoard
+         Route::get('/dashboard', [DashboardViewersControllers::class, 'index']);
+         Route::get('/dashboard/data', [DashboardViewersControllers::class, 'data']);
          // Profile
          Route::get('/profile', [ProfileViwerControllers::class, 'index']);
          Route::put('/profile/updateProfile', [ProfileViwerControllers::class, 'storeProfile']);

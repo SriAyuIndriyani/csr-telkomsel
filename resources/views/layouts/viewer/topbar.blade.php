@@ -51,7 +51,9 @@
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <!-- item-->
+                    <a class="dropdown-item" href="/viewer/profile"><i
+                            class="fas fa-user font-size-16 align-middle me-1"></i> Profile</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="/log-out"><i
                             class="mdi mdi-logout font-size-16 align-middle me-1 text-danger"></i> Keluar</a>
                 </div>

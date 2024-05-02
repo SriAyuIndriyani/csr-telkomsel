@@ -10,9 +10,9 @@
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
-                    <a href="/viewer/profile">
-                        <i class="fas fa-user"></i>
-                        <span data-key="t-dashboard">Profile</span>
+                    <a href="/viewer/dashboard">
+                        <i class="fas fa-home"></i>
+                        <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
                 <li>
