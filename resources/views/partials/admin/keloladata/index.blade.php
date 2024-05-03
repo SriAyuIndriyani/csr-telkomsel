@@ -25,11 +25,7 @@
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             <h4 class="page-title mb-0 font-size-18">Kelola Data Laptop</h4>
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item">Kelola Data Laptop</li>
-                                </ol>
-                            </div>
+
                         </div>
                     </div>
                 </div>
