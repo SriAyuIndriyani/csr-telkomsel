@@ -43,7 +43,7 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Username</th>
-                                <th style="width: 80px; min-width: 80px;">Aksi</th>
+                                <th style="width: 80px; min-width: 80px;"><center>Aksi</center></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,28 +56,16 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->username }}</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button
-                                                class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle"
-                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bx bx-dots-horizontal-rounded"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item text-warning"
-                                                        href="/admin/all-user/update/{{ $item->id }}"><i
-                                                            class="mdi mdi-pencil-outline font-size-16 align-middle me-1"></i>
-                                                        Ubah Data
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item text-danger"
-                                                        href="/admin/all-user/delete/{{ $item->id }}"
-                                                        data-confirm-delete="true"><i
-                                                            class="mdi mdi-trash-can-outline font-size-16 align-middle me-1 text-danger"></i>
-                                                        Hapus Data</a>
-                                                </li>
-                                            </ul>
+                                        <div>
+                                            <!-- Tombol "Ubah Data" -->
+                                            <a class="btn btn-link text-warning" href="/admin/kelola-data/update/{{ $item->id }}" title="Ubah Data">
+                                                <i class="mdi mdi-pencil-outline font-size-16 align-middle"></i>
+                                            </a>
+                                        
+                                            <!-- Tombol "Hapus Data" -->
+                                            <a class="btn btn-link text-danger" href="/admin/kelola-data/delete/{{ $item->id }}" data-confirm-delete="true" title="Hapus Data">
+                                                <i class="mdi mdi-trash-can-outline font-size-16 align-middle text-danger"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
