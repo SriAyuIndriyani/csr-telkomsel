@@ -57,6 +57,7 @@ Route::middleware('auth:web')->group(function () {
          Route::get('/kelola-data/update/{id}', [CSRControllers::class, 'update']);
          Route::post('/kelola-data/updateData/{id}', [CSRControllers::class, 'updateData']);
          Route::delete('/kelola-data/delete/{id}', [CSRControllers::class, 'delete']);
+         Route::post('/kelola-data/download', [CSRControllers::class, 'download']);
       });
    });
    /**

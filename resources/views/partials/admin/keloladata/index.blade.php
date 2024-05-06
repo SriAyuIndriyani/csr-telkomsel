@@ -30,10 +30,47 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-end mb-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light me-2"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i class="fas fa-file-excel label-icon"></i>Download
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Download</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/admin/kelola-data/download" method="POST">
+                                        @csrf
+                                        <select name="location" id="location" class="form-select">
+                                            <option value="">Semua Lokasi</option>
+                                            @foreach ($location as $location)
+                                                <option value="{{ $location->id }}">{{ $location->lokasi }}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Download</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <a href="/admin/kelola-data/create "
                         class="btn btn-primary btn-sm waves-effect btn-label waves-light"><i
                             class="fas fa-plus-circle label-icon"></i>Data Laptop</a>
                 </div>
+
+
                 <!-- end page title -->
                 <div class="table-responsive mb-4">
                     <table class="table align-middle datatable dt-responsive table-check nowrap"
@@ -51,7 +88,9 @@
                                 <th scope="col">Processor</th>
                                 <th scope="col">Antivirus</th>
                                 <th scope="col">RAM</th>
-                                <th style="width: 80px; min-width: 80px;"><center>Aksi<center></th>
+                                <th style="width: 80px; min-width: 80px;">
+                                    <center>Aksi<center>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,15 +113,19 @@
                                     <td>
                                         <div>
                                             <!-- Tombol "Ubah Data" -->
-                                            <a class="btn btn-link text-warning" href="/admin/kelola-data/update/{{ $item->id }}" title="Ubah Data">
+                                            <a class="btn btn-link text-warning"
+                                                href="/admin/kelola-data/update/{{ $item->id }}" title="Ubah Data">
                                                 <i class="mdi mdi-pencil-outline font-size-16 align-middle"></i>
                                             </a>
-                                        
+
                                             <!-- Tombol "Hapus Data" -->
-                                            <a class="btn btn-link text-danger" href="/admin/kelola-data/delete/{{ $item->id }}" data-confirm-delete="true" title="Hapus Data">
-                                                <i class="mdi mdi-trash-can-outline font-size-16 align-middle text-danger"></i>
+                                            <a class="btn btn-link text-danger"
+                                                href="/admin/kelola-data/delete/{{ $item->id }}"
+                                                data-confirm-delete="true" title="Hapus Data">
+                                                <i
+                                                    class="mdi mdi-trash-can-outline font-size-16 align-middle text-danger"></i>
                                             </a>
-                                        </div>                                        
+                                        </div>
                                     </td>
                                 </tr>
                                 {{-- MODAL --}}

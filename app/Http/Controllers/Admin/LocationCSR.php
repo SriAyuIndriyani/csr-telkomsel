@@ -12,6 +12,9 @@ class LocationCSR extends Controller
     function index()
     {
         $location = LocationCsrModels::get();
+        $title = 'Hapus Data Pengguna!';
+        $text = "Apakah anda yakin ingin menghapus data pengguna ini?";
+        confirmDelete($title, $text);
         return view('partials.admin.location_csr.index', compact('location'));
     }
 

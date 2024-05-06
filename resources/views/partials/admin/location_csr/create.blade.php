@@ -26,7 +26,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/admin/location-csr">Lokasi CSR</a></li>
-                                    <li class="breadcrumb-item active">Tambah Lokasi CSR</a></li>
+                                    <li class="breadcrumb-item active">Tambah Lokasi CSR</li>
                                 </ol>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
 
                 <div class="card">
                     <div class="card-body mt-2">
-                        <form class="row g-3" action="/admin/location-csr/createData" method="POST">
+                        <form class="row g-3" id="form" action="/admin/location-csr/createData" method="post">
                             @csrf
                             <div class="col-12">
                                 <label for="inputNanme4" class="form-label">Nama</label>
@@ -45,8 +45,7 @@
                             </div>
                             <div class="col-12">
                                 <label for="warna" class="form-label">Warna</label>
-                                <input type="color" class="form-control" id="warna" name="warna"
-                                    placeholder="Masukkan nama lokasi costumer service relationship">
+                                <input type="color" class="form-control" id="warna" name="warna">
                             </div>
                             <div class="text-end">
                                 <button type="submit"
@@ -66,8 +65,57 @@
     <!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
+
+<!-- Elemen loading -->
+<div id="loading" style="display: none;">
+    <p>Mohon tunggu, sedang memproses...</p>
+    <!-- Atau tambahkan indikator loading seperti spinner -->
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Memuat...</span>
+    </div>
+</div>
+
+
 <!-- JAVASCRIPT -->
 @include('layouts.admin.vendor-scripts')
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#submitBtn').click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default tombol submit
+
+            // Ambil data dari form
+            var formData = {
+                lokasi: $('#inputNanme4').val(), // Ambil nilai input nama lokasi
+                warna: $('#warna').val() // Ambil nilai input warna
+            };
+
+            // Tampilkan elemen loading
+            $('#loading').show();
+
+            // Kirim permintaan ke server menggunakan Ajax
+            $.ajax({
+                url: '/admin/location-csr/createData', // Ganti dengan URL endpoint Anda
+                method: 'POST', // Ganti dengan metode yang sesuai
+                data: formData, // Gunakan data yang telah diambil dari form
+                success: function(response) {
+                    // Handle respons dari server (jika diperlukan)
+                    // Sembunyikan elemen loading setelah permintaan selesai diproses
+                    $('#loading').hide();
+                },
+                error: function(xhr, status, error) {
+                    // Handle kesalahan jika terjadi (jika diperlukan)
+                    // Sembunyikan elemen loading setelah permintaan selesai diproses
+                    $('#loading').hide();
+                }
+            });
+        });
+    });
+</script>
+
+
+
 
 <script src="/assets/js/pages/pass-addon.init.js"></script>
 

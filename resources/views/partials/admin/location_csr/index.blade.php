@@ -43,7 +43,9 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Lokasi</th>
                                 <th scope="col">Warna</th>
-                                <th style="width: 80px; min-width: 80px;"><center>Aksi</center></th>
+                                <th style="width: 80px; min-width: 80px;">
+                                    <center>Aksi</center>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,13 +61,17 @@
                                     <td>
                                         <div>
                                             <!-- Tombol "Ubah Data" -->
-                                            <a class="btn btn-link text-warning" href="/admin/kelola-data/update/{{ $item->id }}" title="Ubah Data">
+                                            <a class="btn btn-link text-warning"
+                                                href="/admin/location-csr/update/{{ $item->id }}" title="Ubah Data">
                                                 <i class="mdi mdi-pencil-outline font-size-16 align-middle"></i>
                                             </a>
-                                        
+
                                             <!-- Tombol "Hapus Data" -->
-                                            <a class="btn btn-link text-danger" href="/admin/kelola-data/delete/{{ $item->id }}" data-confirm-delete="true" title="Hapus Data">
-                                                <i class="mdi mdi-trash-can-outline font-size-16 align-middle text-danger"></i>
+                                            <a class="btn btn-link text-danger"
+                                                href="/admin/location-csr/delete/{{ $item->id }}"
+                                                data-confirm-delete="true" title="Hapus Data">
+                                                <i
+                                                    class="mdi mdi-trash-can-outline font-size-16 align-middle text-danger"></i>
                                             </a>
                                         </div>
                                     </td>
