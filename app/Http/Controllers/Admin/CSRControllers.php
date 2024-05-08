@@ -98,7 +98,7 @@ class CSRControllers extends Controller
             $data = CSRModels::select('keloladata.nama', 'keloladata.jabatan', 'keloladata.type', 'keloladata.hostname', 'keloladata.ssd', 'keloladata.winver', 'keloladata.processor', 'keloladata.antivirus', 'keloladata.ram', 'location_csr.lokasi')
                 ->where('id_location_csr', $id)
                 ->join('location_csr', 'location_csr.id', '=', 'keloladata.id_location_csr')
-                ->orderBy('kelola   data.id_location_csr', 'ASC')
+                ->orderBy('keloladata.id_location_csr', 'ASC')
                 ->get()
                 ->toArray();
         }
